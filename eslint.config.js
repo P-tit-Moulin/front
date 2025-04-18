@@ -38,7 +38,11 @@ export default [
       prettier: prettierPlugin, // Ajout du plugin Prettier correctement sous forme d'objet
     },
     rules: {
-      'prettier/prettier': ['error', { singleQuote: true }], // Applique les règles Prettier
+      'prettier/prettier': [
+        'error',
+        { singleQuote: true },
+        { endOfLine: 'lf' },
+      ], // Applique les règles Prettier
     },
   },
 
