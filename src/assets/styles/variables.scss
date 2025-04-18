@@ -1,4 +1,8 @@
-@use 'vuetify/settings' with (
-  $button-border-radius: 8px,
-  $button-height: 34px
-);
+html {
+  font-size: 16px;
+}
+
+// Colors
+$primary-green: #61c187;
+$primary-black: #363636;
+$primary-grey: #c4c4c4;

@@ -14,7 +14,7 @@ export default defineConfig({
     vue(),
     vuetify({
       styles: {
-        configFile: 'src/assets/styles/variables.scss',
+        configFile: 'src/assets/styles/settings.scss',
       },
     }),
   ],
@@ -26,7 +26,10 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/assets/styles/variables.scss" as *;`,
+        additionalData: `
+        @use "@/assets/styles/settings.scss" as *;
+        @use "@/assets/styles/variables.scss" as *;
+        `,
       },
     },
   },
