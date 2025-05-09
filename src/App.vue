@@ -1,10 +1,17 @@
 <template>
-  <VContainer fluid>
-    <router-view />
-    <Footer />
-  </VContainer>
+  <VApp class="app-container">
+    <VContainer fluid><NavBar /> <router-view /> </VContainer><Footer />
+  </VApp>
 </template>
 
 <script setup>
 import Footer from './views/components/Footer.vue'
+import NavBar from './views/components/NavBar.vue'
 </script>
+
+<style lang="scss" scoped>
+.app-container {
+  height: 100vh !important;
+  margin-bottom: 214px;
+}
+</style>
