@@ -4,9 +4,7 @@
       <VCol cols="7" class="card-title d-flex flex-column">
         <span class="product-card-title mb-1">{{ title }}</span>
         <span v-if="address" class="product-card-subtitle">
-          <VIcon color="$primary-grey" size="8">mdi-map-marker</VIcon
-          >{{ address }}</span
-        >
+          <VIcon color="$primary-grey" size="8">mdi-map-marker</VIcon>{{ address }}</span>
       </VCol>
       <VCol cols="5" class="card-image d-flex align-center justify-center">
         <img width="150" :src="image" :alt="title" />
