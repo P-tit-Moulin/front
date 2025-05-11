@@ -28,7 +28,8 @@ const vuetify = createVuetify({
   defaults: {
     PrimaryButton: {
       color: '#61C187',
-      class: 'btn-style',
+      flat: true,
+      class: 'btn-style-primary',
     },
     SecondaryButton: {
       color: '#61C187',

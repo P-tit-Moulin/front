@@ -4,7 +4,7 @@
       <VCol cols="7" class="card-title d-flex flex-column">
         <span class="product-card-title mb-1">{{ title }}</span>
         <span v-if="address" class="product-card-subtitle">
-          <v-icon color="$primary-grey" size="8">mdi-map-marker</v-icon
+          <VIcon color="$primary-grey" size="8">mdi-map-marker</VIcon
           >{{ address }}</span
         >
       </VCol>

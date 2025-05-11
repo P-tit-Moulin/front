@@ -1,19 +1,17 @@
 <template>
   <div class="footer-bg">
-    <v-row class="d-flex h-100">
-      <v-col cols="5" class="d-flex flex-column justify-center align-center">
+    <VRow class="d-flex h-100">
+      <VCol cols="5" class="d-flex flex-column justify-center align-center">
         <img src="@/assets/img/logo.svg" width="177px" height="84px" />
         <span class="img-subtitle"
           >Copyright 2022 - P’tit Moulin - Design par la X Force</span
         >
-      </v-col>
-      <v-col cols="3">
-        <v-list density="compact" class="footer-list">
-          <v-list-subheader class="list-subtitle">
-            Plan du site
-          </v-list-subheader>
+      </VCol>
+      <VCol cols="3">
+        <VList density="compact" class="footer-list">
+          <VListSubheader class="list-subtitle"> Plan du site </VListSubheader>
 
-          <v-list-item
+          <VListItem
             v-for="(item, i) in itemsSite"
             :key="i"
             :value="item.value"
@@ -21,13 +19,13 @@
             color="$primary-black"
             class="list-item"
           />
-        </v-list>
-      </v-col>
-      <v-col cols="4">
-        <v-list density="compact" class="footer-list">
-          <v-list-subheader class="list-subtitle">Information</v-list-subheader>
+        </VList>
+      </VCol>
+      <VCol cols="4">
+        <VList density="compact" class="footer-list">
+          <VListSubheader class="list-subtitle">Information</VListSubheader>
 
-          <v-list-item
+          <VListItem
             v-for="(item, i) in itemsInfos"
             :key="i"
             :value="item.value"
@@ -35,9 +33,9 @@
             color="$primary-black"
             class="list-item"
           />
-        </v-list>
-      </v-col>
-    </v-row>
+        </VList>
+      </VCol>
+    </VRow>
   </div>
 </template>
 

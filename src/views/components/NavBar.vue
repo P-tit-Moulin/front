@@ -1,5 +1,5 @@
 <template>
-  <v-tabs
+  <VTabs
     v-model="tab"
     align-tabs="center"
     height="95px"
@@ -8,16 +8,14 @@
     fixed
     class="navbar"
   >
-    <v-tab><img src="@/assets/img/logo.svg" /></v-tab>
+    <VTab><img src="@/assets/img/logo.svg" /></VTab>
     <v-spacer />
-    <v-tab :value="1" to="/" class="navbar-tab">Accueil</v-tab>
-    <v-tab :value="2" to="/" class="navbar-tab">Produits</v-tab>
-    <v-tab :value="3" to="/" class="navbar-tab">Producteurs</v-tab>
+    <VTab :value="1" to="/" class="navbar-tab">Accueil</VTab>
+    <VTab :value="2" to="/" class="navbar-tab">Produits</VTab>
+    <VTab :value="3" to="/" class="navbar-tab">Producteurs</VTab>
     <v-spacer />
-    <v-tab :value="4" class="navbar-icon-tab"
-      ><v-icon>mdi-account</v-icon></v-tab
-    >
-  </v-tabs>
+    <VTab :value="4" class="navbar-icon-tab"><VIcon>mdi-account</VIcon></VTab>
+  </VTabs>
 </template>
 
 <script setup>

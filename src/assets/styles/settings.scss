@@ -1,4 +1,5 @@
 @use 'vuetify/settings' with (
   $button-border-radius: 8px,
-  $button-height: 34px
+  $button-height: 34px,
+  $button-text-transform: none
 );
