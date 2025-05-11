@@ -1,15 +1,5 @@
-.product-card-title {
-  color: #363636;
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 100%;
-  font-size: 0.875rem;
-}
-
-.product-card-subtitle {
-  color: #c4c4c4;
-  font-weight: 400;
-  line-height: 100%;
-  letter-spacing: 0;
-  font-size: 0.625rem;
+.btn-style {
+  &-primary {
+    color: $primary-white !important;
+  }
 }
