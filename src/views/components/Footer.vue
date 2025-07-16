@@ -85,7 +85,7 @@ const itemsInfos = [
   position: fixed;
   bottom: 0;
   width: 100%;
-  max-height: 214px !important;
+  max-height: 214px;
 }
 
 .img-subtitle {
