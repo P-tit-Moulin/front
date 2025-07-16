@@ -1,6 +1,6 @@
 <template>
-  <div class="footer-bg">
-    <VRow class="d-flex h-100">
+  <VFooter class="footer-bg">
+    <VRow class="d-flex">
       <VCol cols="5" class="d-flex flex-column justify-center align-center">
         <img src="@/assets/img/logo.svg" width="177px" height="84px" />
         <span class="img-subtitle"
@@ -36,7 +36,7 @@
         </VList>
       </VCol>
     </VRow>
-  </div>
+  </VFooter>
 </template>
 
 <script setup>
@@ -82,12 +82,10 @@ const itemsInfos = [
 <style lang="scss" scoped>
 .footer-bg {
   background-image: url('@/assets/img/vegetable_bg.svg');
-  background-color: rgba(97, 193, 135, 0.1);
-  margin-inline: -16px;
-  margin-bottom: -16px;
+  position: fixed;
+  bottom: 0;
   width: 100%;
-  height: 214px;
-  margin-top: 16px;
+  max-height: 214px !important;
 }
 
 .img-subtitle {

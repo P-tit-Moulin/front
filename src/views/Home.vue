@@ -225,6 +225,7 @@ const producers = ref([
   background-position-y: center;
   padding-inline: 280px;
   margin-top: 112px;
+  margin-bottom: 230px;
 }
 
 .producer-subtitle-grey,
