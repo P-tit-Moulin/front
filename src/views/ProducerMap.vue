@@ -75,7 +75,7 @@ onMounted(async () => {
     const f = record.fields
     return {
       label: f.nom ?? f.raison_sociale ?? 'Producteur inconnu',
-      adress: f.com_name ?? '',
+      address: f.com_name ?? '',
       categorie: f.categorie ?? '',
     }
   })
