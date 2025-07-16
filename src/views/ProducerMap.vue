@@ -20,7 +20,7 @@
       <ProducerCard
         :name="producerData?.label"
         :business="producerData?.categorie"
-        :address="producerData?.adress"
+        :address="producerData?.address"
         :description="producerData?.description"
         close
         @close="dialog = !dialog"
