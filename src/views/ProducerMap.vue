@@ -66,7 +66,7 @@ onMounted(async () => {
         label: f.nom ?? f.raison_sociale ?? 'Producteur inconnu',
         url: f.url_sur_la_plateforme_partenaire ?? '',
         description: f.description ?? '',
-        adress: f.com_name ?? '',
+        address: f.com_name ?? '',
         categorie: f.categorie ?? '',
       }
     })
