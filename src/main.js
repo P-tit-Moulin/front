@@ -24,6 +24,7 @@ const vuetify = createVuetify({
   aliases: {
     PrimaryButton: components.VBtn,
     SecondaryButton: components.VBtn,
+    TertiaryButton: components.VBtn,
   },
   defaults: {
     PrimaryButton: {
@@ -34,6 +35,11 @@ const vuetify = createVuetify({
     SecondaryButton: {
       color: '#61C187',
       variant: 'outlined',
+      class: 'btn-style',
+    },
+    TertiaryButton: {
+      color: '#333',
+      variant: 'text',
       class: 'btn-style',
     },
   },

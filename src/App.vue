@@ -12,6 +12,5 @@ import NavBar from './views/components/NavBar.vue'
 <style lang="scss" scoped>
 .app-container {
   height: 100vh !important;
-  margin-bottom: 214px;
 }
 </style>

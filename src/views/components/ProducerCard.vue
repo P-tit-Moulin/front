@@ -1,5 +1,8 @@
 <template>
   <VCard class="producer-card">
+    <VCardTitle v-if="close" class="d-flex justify-end pb-2">
+      <TertiaryButton icon="mdi-close" @click="$emit('close')" />
+    </VCardTitle>
     <VCardSubtitle v-if="address" class="px-4 pt-4 pb-0">
       <span class="producer-card-subtitle">
         <VIcon color="$primary-grey" size="8">mdi-map-marker</VIcon
@@ -47,12 +50,15 @@ defineProps({
   profilPicture: {
     type: String,
   },
+  close: {
+    type: Boolean,
+    default: false,
+  },
 })
 </script>
 
 <style lang="scss" scoped>
 .producer-card {
-  width: 227px;
   box-shadow: rgba(55, 55, 55, 0.2);
   border-radius: 16px;
 }
