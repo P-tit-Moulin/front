@@ -58,25 +58,30 @@ onMounted(async () => {
         Array.isArray(record.fields?.geolocalisation) &&
         record.fields.geolocalisation.length === 2
     )
-    .map((record) => {
-      const f = record.fields
-      return {
-        lat: f.geolocalisation[0],
-        lng: f.geolocalisation[1],
-        label: f.nom ?? f.raison_sociale ?? 'Producteur inconnu',
-        url: f.url_sur_la_plateforme_partenaire ?? '',
-        description: f.description ?? '',
-        address: f.com_name ?? '',
-        categorie: f.categorie ?? '',
-      }
-    })
 
-  producerList.value = records.map((record) => {
+  const mapRecordFields = (record) => {
     const f = record.fields
     return {
       label: f.nom ?? f.raison_sociale ?? 'Producteur inconnu',
       address: f.com_name ?? '',
       categorie: f.categorie ?? '',
+    }
+  }
+    .map((record) => {
+      const baseFields = mapRecordFields(record)
+      return {
+        lat: record.fields.geolocalisation[0],
+        lng: record.fields.geolocalisation[1],
+        ...baseFields,
+        url: record.fields.url_sur_la_plateforme_partenaire ?? '',
+        description: record.fields.description ?? '',
+      }
+    })
+
+  producerList.value = records.map((record) => {
+    const baseFields = mapRecordFields(record)
+    return {
+      ...baseFields,
     }
   })
 })
