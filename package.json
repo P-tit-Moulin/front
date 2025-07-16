@@ -38,10 +38,8 @@
   },
   "lint-staged": {
     "*.{js,vue}": [
-      "eslint --fix"
-    ],
-    "*.{js,vue,scss,css,json,md}": [
-      "prettier --write"
+      "npm run lint",
+      "npm run format"
     ]
   }
 }
