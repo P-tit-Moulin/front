@@ -3,7 +3,7 @@
     <VCol cols="5">
       <VContainer class="producer-container">
         <VRow>
-          <VCol v-for="producer in producerList" cols="6">
+          <VCol v-for="producer in producerList" :key="producer.label" cols="6">
             <ProducerCard
               :name="producer?.label"
               :business="producer?.categorie"
