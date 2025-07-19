@@ -6,7 +6,7 @@ import babelEslintParser from '@babel/eslint-parser'
 import prettierPlugin from 'eslint-plugin-prettier'
 
 export default [
-  js.configs.recommended, // Ajout de la config ESLint recommandée
+  js.configs.recommended,
 
   {
     files: ['**/*.vue'],
@@ -21,7 +21,7 @@ export default [
       },
     },
     plugins: {
-      vue, // Ajout du plugin Vue
+      vue,
     },
   },
 
@@ -35,21 +35,23 @@ export default [
 
   {
     plugins: {
-      prettier: prettierPlugin, // Ajout du plugin Prettier correctement sous forme d'objet
+      prettier: prettierPlugin,
     },
     rules: {
+      'no-unused-vars': 'warn',
+      'no-undef': 'warn',
       'prettier/prettier': [
         'error',
         { singleQuote: true },
-        { endOfLine: 'lf' },
-      ], // Applique les règles Prettier
+        { endOfLine: 'auto' },
+      ],
+      'no-console': 'off',
     },
   },
 
   {
-    // Configurations de Prettier (au lieu d'utiliser "extends")
     rules: {
-      ...prettier.rules, // Inclure toutes les règles de prettier
+      ...prettier.rules,
     },
   },
 ]
