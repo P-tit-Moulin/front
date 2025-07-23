@@ -14,7 +14,6 @@ export const useMapStore = defineStore('map', {
       if (this.loaded) return
 
       this.loading = true
-      this.error = null
 
       const allCoordinates = []
       const pageSize = 1000
@@ -29,18 +28,8 @@ export const useMapStore = defineStore('map', {
           const response = await axios.get(url, {
             headers: { Accept: 'application/json' },
           })
-          console.log('response', response)
           const records = response.data.records || []
           total = response.data.nhits || 0
-
-          console.log(
-            'start:',
-            start,
-            'total:',
-            total,
-            'records:',
-            records.length
-          )
 
           records.forEach((record) => {
             const f = record.fields
@@ -62,14 +51,10 @@ export const useMapStore = defineStore('map', {
         this.coordinates = allCoordinates
         this.loaded = true
       } catch (err) {
-        this.error = err
+        console.log(err)
       } finally {
         this.loading = false
       }
-    },
-
-    selectProducerById(id) {
-      this.selectedProducer = this.coordinates.find((p) => p.id === id) || null
     },
   },
 })
