@@ -51,7 +51,7 @@ export const useMapStore = defineStore('map', {
         this.coordinates = allCoordinates
         this.loaded = true
       } catch (err) {
-        console.log(err)
+        console.error("Error occurred while fetching coordinates from the API:", err)
       } finally {
         this.loading = false
       }
