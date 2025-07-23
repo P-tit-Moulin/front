@@ -45,7 +45,7 @@ export const useProducerStore = defineStore('producer', {
               id,
               label: f.nom ?? f.raison_sociale ?? 'Producteur inconnu',
               description: f.description ?? '',
-              adress: f.com_name ?? '',
+              address: f.com_name ?? '',
               category: f.categorie ?? '',
               familles_des_produits: f.familles_des_produits || [],
               familles_des_produits_restreintes:
