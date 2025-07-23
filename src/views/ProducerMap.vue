@@ -3,7 +3,7 @@
     <VCol cols="5">
       <VContainer class="producer-container">
         <VRow>
-          <VCol v-for="producer in producerList" :key="producer.label" cols="6">
+          <VCol v-for="producer in producerStore.producers" :key="producer.id" cols="6">
             <ProducerCard
               :name="producer?.label"
               :business="producer?.categorie"
@@ -14,7 +14,7 @@
       </VContainer>
     </VCol>
     <VCol cols="7">
-      <Map :coordinates="coordinates" @marker-click="handleMarkerClick" />
+      <Map :coordinates="getCoordinates" @marker-click="handleMarkerClick" />
     </VCol>
     <VDialog v-model="dialog" max-width="560">
       <ProducerCard
@@ -30,60 +30,33 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Map from './components/Map.vue'
-import axios from 'axios'
 import ProducerCard from './components/ProducerCard.vue'
+import { useProducerStore } from '../store/producer'
+import { useMapStore } from '../store/map'
 
-const coordinates = ref([])
 const dialog = ref(false)
 const producerData = ref(null)
-const producerList = ref([])
+const producerStore = useProducerStore()
+const mapStore = useMapStore()
 
-const handleMarkerClick = (coord) => {
-  producerData.value = coord
-  dialog.value = true
+const getCoordinates = computed(() => mapStore.coordinates)
+
+async function handleMarkerClick(coord) {
+  try {
+    producerData.value = await producerStore.getProducerById(coord.id)
+    dialog.value = true
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 onMounted(async () => {
-  const response = await axios.get(
-    'https://data.opendatasoft.com/api/records/1.0/search/?dataset=flux-toutes-plateformes%40producteursagri&rows=100'
-  )
-
-  const records = response.data.records || []
-
-  coordinates.value = records
-    .filter(
-      (record) =>
-        Array.isArray(record.fields?.geolocalisation) &&
-        record.fields.geolocalisation.length === 2
-    )
-
-  const mapRecordFields = (record) => {
-    const f = record.fields
-    return {
-      label: f.nom ?? f.raison_sociale ?? 'Producteur inconnu',
-      address: f.com_name ?? '',
-      categorie: f.categorie ?? '',
-    }
+  if (!mapStore.loading) {
+    await mapStore.fetchCoordinates()
+    await producerStore.fetchProducers()
   }
-    .map((record) => {
-      const baseFields = mapRecordFields(record)
-      return {
-        lat: record.fields.geolocalisation[0],
-        lng: record.fields.geolocalisation[1],
-        ...baseFields,
-        url: record.fields.url_sur_la_plateforme_partenaire ?? '',
-        description: record.fields.description ?? '',
-      }
-    })
-
-  producerList.value = records.map((record) => {
-    const baseFields = mapRecordFields(record)
-    return {
-      ...baseFields,
-    }
-  })
 })
 </script>
 
