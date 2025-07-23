@@ -59,7 +59,7 @@ export const useProducerStore = defineStore('producer', {
 
         this.producers = allProducers
       } catch (err) {
-        console.log(err)
+        console.error("Failed to fetch producers from the API:", err)
       } finally {
         this.loading = false
       }
