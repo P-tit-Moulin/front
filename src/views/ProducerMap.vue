@@ -7,7 +7,7 @@
             <ProducerCard
               :name="producer?.label"
               :business="producer?.categorie"
-              :address="producer?.adress"
+              :address="producer?.address"
             />
           </VCol>
         </VRow>
