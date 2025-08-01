@@ -66,45 +66,33 @@
 
 <script setup>
 import { ref } from 'vue'
-import ProductCard from './components/ProductCard.vue'
-import ProducerCard from './components/ProducerCard.vue'
+import ProductCard from '@/components/ProductCard.vue'
+import ProducerCard from '@/components/ProducerCard.vue'
 
 const products = ref([
   {
     id: 1,
     title: 'Pomme',
-    image:
-      'https://www.domaine-darmandieu.com/wp-content/uploads/2018/07/Domaine-darmandieu-variete-pomme-Braeburn.png',
   },
   {
     id: 2,
     title: 'Carotte',
-    image:
-      'https://www.fondation-louisbonduelle.org/wp-content/uploads/2016/10/carotte_222805396.png',
   },
   {
     id: 3,
     title: 'Tomate',
-    image:
-      'https://static.vecteezy.com/system/resources/thumbnails/041/491/392/small_2x/ai-generated-tomato-png.png',
   },
   {
     id: 4,
     title: 'Banane',
-    image:
-      'https://croissy-fruits.fr/cdn/shop/files/banane_detouree.webp?v=1745064249&width=1000',
   },
   {
     id: 5,
     title: 'Courgette',
-    image:
-      'https://www.fondation-louisbonduelle.org/wp-content/uploads/2016/09/courgette_225127714-e1472806852932.png',
   },
   {
     id: 6,
     title: 'Raisin',
-    image:
-      'https://croissy-fruits.fr/cdn/shop/files/RSPROUGE.webp?v=1745995332&width=1000',
   },
 ])
 

@@ -8,9 +8,6 @@
           >{{ address }}</span
         >
       </VCol>
-      <VCol cols="5" class="card-image d-flex align-center justify-center">
-        <img width="150" :src="image" :alt="title" />
-      </VCol>
     </VCardText>
   </VCard>
 </template>
@@ -24,9 +21,6 @@ defineProps({
   address: {
     type: String,
   },
-  image: {
-    type: String,
-  },
 })
 </script>
 
@@ -38,12 +32,6 @@ defineProps({
 .card-title {
   background-image: url('@/assets/img/vegetable_bg.svg');
   background-size: cover;
-}
-
-.card-image {
-  background-color: $primary-green;
-  border-top-left-radius: 30%;
-  border-bottom-left-radius: 30%;
 }
 
 .product-card-title {

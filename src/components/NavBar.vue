@@ -11,7 +11,7 @@
     <VTab><img src="@/assets/img/logo.svg" /></VTab>
     <v-spacer />
     <VTab :value="1" to="/" class="navbar-tab">Accueil</VTab>
-    <VTab :value="2" to="/" class="navbar-tab">Produits</VTab>
+    <VTab :value="2" to="/product-list" class="navbar-tab">Produits</VTab>
     <VTab :value="3" to="/producer-map" class="navbar-tab">Producteurs</VTab>
     <v-spacer />
     <VTab :value="4" class="navbar-icon-tab"><VIcon>mdi-account</VIcon></VTab>
