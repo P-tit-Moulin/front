@@ -3,7 +3,11 @@
     <VCol cols="5">
       <VContainer class="producer-container">
         <VRow>
-          <VCol v-for="producer in producerStore.producers" :key="producer.id" cols="6">
+          <VCol
+            v-for="producer in producerStore.producers"
+            :key="producer.id"
+            cols="6"
+          >
             <ProducerCard
               :name="producer?.label"
               :business="producer?.categorie"
@@ -31,10 +35,10 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import Map from './components/Map.vue'
-import ProducerCard from './components/ProducerCard.vue'
-import { useProducerStore } from '../store/producer'
-import { useMapStore } from '../store/map'
+import Map from '@/components/Map.vue'
+import ProducerCard from '@/components/ProducerCard.vue'
+import { useProducerStore } from '@/store/producer'
+import { useMapStore } from '@/store/map'
 
 const dialog = ref(false)
 const producerData = ref(null)
