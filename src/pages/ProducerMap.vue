@@ -58,7 +58,7 @@
           <TertiaryButton
             :color="userLocation ? '#61C187' : 'primary'"
             :disabled="locationLoading"
-            :loading="locagetUsertionLoading"
+            :loading="locationLoading"
             @click="getUserLocation"
           >
             <VIcon>{{
