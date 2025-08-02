@@ -23,7 +23,7 @@
       <span class="product-green-title">produits</span>
       <span class="product-black-title"> proposés. </span>
     </VCol>
-    <VCol cols="4" v-for="product in products" :key="product.id">
+    <VCol v-for="product in products" :key="product.id" cols="4">
       <ProductCard :title="product.title" :image="product.image" />
     </VCol>
   </VRow>
@@ -48,13 +48,8 @@
       <span class="product-green-title">artisans</span>
       <span class="product-black-title"> ont du talent. </span>
     </VCol>
-    <VCol cols="3" v-for="producer in producers" :key="producer.id">
-      <ProducerCard
-        :name="producer.name"
-        :business="producer.business"
-        :address="producer.address"
-        :description="producer.description"
-      />
+    <VCol v-for="producer in producers" :key="producer.id" cols="3">
+      <ProducerCard :item="producer" @go-to-producer="goToProducer(producer)" />
     </VCol>
     <VCol cols="12" class="d-flex justify-center my-8">
       <span class="producer-subtitle-grey">Découvrez l’ensemble de nos</span>
@@ -68,6 +63,9 @@
 import { ref } from 'vue'
 import ProductCard from '@/components/ProductCard.vue'
 import ProducerCard from '@/components/ProducerCard.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const products = ref([
   {
@@ -130,6 +128,10 @@ const producers = ref([
       'Thomas produit du fromage de chèvre fermier avec passion, dans une ferme familiale depuis trois générations.',
   },
 ])
+
+const goToProducer = producer => {
+  router.push(`/producteur/${producer.id}`)
+}
 </script>
 
 <style lang="scss" scoped>

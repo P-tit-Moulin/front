@@ -41,6 +41,10 @@ const vuetify = createVuetify({
       variant: 'text',
       class: 'btn-style',
     },
+    VCard: {
+      flat: true,
+      class: 'card-style',
+    },
   },
 })
 
