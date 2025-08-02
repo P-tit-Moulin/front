@@ -68,7 +68,7 @@
           </TertiaryButton>
         </VCol>
         <VCol cols="auto" class="text-right">
-          <SecondaryButton @click="clearFilters" class="mr-2">
+          <SecondaryButton class="mr-2" @click="clearFilters">
             Effacer les filtres
           </SecondaryButton>
           <VChip
@@ -214,7 +214,7 @@ const filteredProducers = computed(() => {
   if (filters.value.name) {
     const searchTerm = filters.value.name.toLowerCase()
     filtered = filtered.filter(
-      (producer) =>
+      producer =>
         producer.label?.toLowerCase().includes(searchTerm) ||
         producer.categorie?.toLowerCase().includes(searchTerm) ||
         producer.description?.toLowerCase().includes(searchTerm)
@@ -224,13 +224,13 @@ const filteredProducers = computed(() => {
   // Filtre par catégorie
   if (filters.value.category) {
     filtered = filtered.filter(
-      (producer) => producer.categorie === filters.value.category
+      producer => producer.categorie === filters.value.category
     )
   }
 
   // Filtre par ville
   if (filters.value.city) {
-    filtered = filtered.filter((producer) => {
+    filtered = filtered.filter(producer => {
       const city = extractCityFromAddress(producer.address)
       return city === filters.value.city
     })
@@ -238,9 +238,9 @@ const filteredProducers = computed(() => {
 
   // Filtre par proximité
   if (userLocation.value && filters.value.proximityRadius) {
-    filtered = filtered.filter((producer) => {
+    filtered = filtered.filter(producer => {
       const coordinate = mapStore.coordinates.find(
-        (coord) => coord.id === producer.id
+        coord => coord.id === producer.id
       )
       if (!coordinate) return false
 
@@ -259,8 +259,8 @@ const filteredProducers = computed(() => {
 
 // Coordonnées filtrées pour la carte
 const filteredCoordinates = computed(() => {
-  const filteredIds = filteredProducers.value.map((p) => p.id)
-  return mapStore.coordinates.filter((coord) => filteredIds.includes(coord.id))
+  const filteredIds = filteredProducers.value.map(p => p.id)
+  return mapStore.coordinates.filter(coord => filteredIds.includes(coord.id))
 })
 
 // Computed pour inclure le rayon dans la localisation utilisateur
@@ -331,31 +331,24 @@ async function handleMarkerClick(coord) {
 // Watcher pour mettre à jour le cercle de proximité quand le rayon change
 watch(
   () => filters.value.proximityRadius,
-  (newRadius) => {
+  newRadius => {
     if (mapRef.value && userLocation.value) {
       mapRef.value.updateProximityRadius(newRadius)
     }
   }
 )
 
-onMounted(async () => {
-  if (!mapStore.loading) {
-    await mapStore.fetchCoordinates()
-    await producerStore.fetchProducers()
-  }
-})
-
 // Watcher pour sauvegarder les filtres dans le localStorage (optionnel)
 watch(
   filters,
-  (newFilters) => {
+  newFilters => {
     localStorage.setItem('producerFilters', JSON.stringify(newFilters))
   },
   { deep: true }
 )
 
-// Restaurer les filtres au chargement (optionnel)
-onMounted(() => {
+onMounted(async () => {
+  // Restaurer les filtres sauvegardés
   const savedFilters = localStorage.getItem('producerFilters')
   if (savedFilters) {
     try {
@@ -364,6 +357,12 @@ onMounted(() => {
     } catch (e) {
       console.error('Erreur lors de la restauration des filtres:', e)
     }
+  }
+
+  // Charger les données de la carte et des producteurs
+  if (!mapStore.loading) {
+    await mapStore.fetchCoordinates()
+    await producerStore.fetchProducers()
   }
 })
 </script>
