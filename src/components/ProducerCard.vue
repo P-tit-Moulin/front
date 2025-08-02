@@ -20,7 +20,7 @@
       </VCol>
       <VCol cols="12" class="d-flex flex-column align-center">
         <span class="producer-name">{{ item?.label }}</span>
-        <span class="producer-business mt-1">{{ item?.business }}</span>
+        <span class="producer-business mt-1">{{ item?.category }}</span>
       </VCol>
       <VCol cols="12" class="producer-description">
         {{ item?.description }}
