@@ -538,7 +538,7 @@ const loadProducers = async () => {
       snackbar.show = true
     }
   } catch (error) {
-    snackbar.message = 'Erreur lors du chargement des producteurs ' + error
+    snackbar.message = `Erreur lors du chargement des producteurs: ${error && error.message ? error.message : error}`
     snackbar.color = 'error'
     snackbar.show = true
   }
