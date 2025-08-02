@@ -2,7 +2,7 @@
   <VTabs
     v-model="tab"
     align-tabs="center"
-    height="95px"
+    height="80px"
     hide-slider
     active-color="#61C187"
     fixed

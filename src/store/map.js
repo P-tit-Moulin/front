@@ -18,7 +18,6 @@ export const useMapStore = defineStore('map', {
       const allCoordinates = []
       const pageSize = 1000
       let start = 0
-      let total = 0
       let fetched = 0
 
       try {
@@ -29,9 +28,8 @@ export const useMapStore = defineStore('map', {
             headers: { Accept: 'application/json' },
           })
           const records = response.data.records || []
-          total = response.data.nhits || 0
 
-          records.forEach((record) => {
+          records.forEach(record => {
             const f = record.fields
             const geo = f.geolocalisation
             if (Array.isArray(geo) && geo.length === 2) {
@@ -51,7 +49,10 @@ export const useMapStore = defineStore('map', {
         this.coordinates = allCoordinates
         this.loaded = true
       } catch (err) {
-        console.error("Error occurred while fetching coordinates from the API:", err)
+        console.error(
+          'Error occurred while fetching coordinates from the API:',
+          err
+        )
       } finally {
         this.loading = false
       }
