@@ -344,13 +344,14 @@
 </template>
 
 <script setup>
-import { reactive, onMounted, computed } from 'vue'
+import { reactive, onMounted, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useProducerStore } from '@/store/producer'
 
 const route = useRoute()
 const router = useRouter()
 const producerStore = useProducerStore()
+const loading = ref(false)
 
 // Snackbar pour les notifications
 const snackbar = reactive({
