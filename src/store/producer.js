@@ -9,9 +9,44 @@ export const useProducerStore = defineStore('producer', {
   }),
 
   getters: {
-    producerList: (state) => Object.values(state.producers),
+    producerList: state => Object.values(state.producers),
 
-    getProducerById: (state) => (id) => state.producers[id] || null,
+    getProducerById: state => id => state.producers[id] || null,
+
+    // Nouveau: Obtenir les producteurs par catégorie
+    getProducersByCategory: state => category => {
+      return Object.values(state.producers).filter(
+        producer => producer.category === category
+      )
+    },
+
+    // Nouveau: Obtenir toutes les catégories uniques
+    allCategories: state => {
+      const categories = Object.values(state.producers)
+        .map(producer => producer.category)
+        .filter(Boolean)
+      return [...new Set(categories)]
+    },
+
+    // Nouveau: Obtenir toutes les villes uniques
+    allCities: state => {
+      const cities = Object.values(state.producers)
+        .map(producer => producer.address)
+        .filter(Boolean)
+      return [...new Set(cities)]
+    },
+
+    // Nouveau: Recherche de producteurs
+    searchProducers: state => query => {
+      const searchTerm = query.toLowerCase()
+      return Object.values(state.producers).filter(
+        producer =>
+          producer.label?.toLowerCase().includes(searchTerm) ||
+          producer.description?.toLowerCase().includes(searchTerm) ||
+          producer.category?.toLowerCase().includes(searchTerm) ||
+          producer.address?.toLowerCase().includes(searchTerm)
+      )
+    },
   },
 
   actions: {
@@ -23,7 +58,6 @@ export const useProducerStore = defineStore('producer', {
       const allProducers = {}
       const pageSize = 1000
       let start = 0
-      let total = 0
       let fetched = 0
 
       try {
@@ -35,9 +69,8 @@ export const useProducerStore = defineStore('producer', {
           })
 
           const records = response.data.records || []
-          total = response.data.nhits || 0
 
-          records.forEach((record) => {
+          records.forEach(record => {
             const f = record.fields
             const id = record.recordid
 

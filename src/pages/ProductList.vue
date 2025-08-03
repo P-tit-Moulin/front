@@ -1,104 +1,105 @@
 <template>
-  <v-row>
-    <v-col
+  <VRow>
+    <VCol
       v-for="product in products"
       :key="product.id"
       cols="12"
       sm="6"
       md="4"
+      class="mt-6"
     >
-      <v-card class="mx-auto" max-width="400" elevation="4" hover>
-        <!-- Icône basée sur la catégorie -->
+      <VCard class="mx-auto" max-width="400" elevation="4" hover>
         <div class="text-center pa-4">
-          <v-icon
+          <VIcon
             :icon="getCategoryIcon(product.category)"
             size="80"
             :color="getCategoryColor(product.category)"
-          ></v-icon>
+          ></VIcon>
         </div>
 
-        <v-card-title class="text-h6 text-center">
+        <VCardTitle class="text-h6 text-center">
           {{ product.name }}
-        </v-card-title>
+        </VCardTitle>
 
-        <v-card-subtitle class="text-center">
+        <VCardSubtitle class="text-center">
           {{ product.category }}
-        </v-card-subtitle>
+        </VCardSubtitle>
 
-        <v-card-actions class="justify-end">
+        <VCardActions class="justify-end">
           <PrimaryButton @click="showProducers(product)">
             Voir les producteurs
           </PrimaryButton>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+        </VCardActions>
+      </VCard>
+    </VCol>
+  </VRow>
 
-  <!-- Dialog pour afficher la liste des producteurs -->
-  <v-dialog v-model="dialog.show" max-width="600" scrollable>
-    <v-card>
-      <v-card-title class="d-flex text-h5">
+  <VDialog v-model="dialog.show" max-width="600" scrollable>
+    <VCard>
+      <VCardTitle class="d-flex text-h5">
         Producteurs de {{ dialog.product?.name }}
         <VSpacer />
         <TertiaryButton @click="dialog.show = false">
           <VIcon size="24">mdi-close</VIcon>
         </TertiaryButton>
-      </v-card-title>
+      </VCardTitle>
 
-      <v-card-text style="height: 400px">
-        <v-list>
-          <v-list-item
+      <VCardText style="height: 400px">
+        <VList v-if="dialog.producers.length > 0">
+          <VListItem
             v-for="producer in dialog.producers"
             :key="producer.id"
             class="mb-2"
           >
-            <template v-slot:prepend>
-              <v-avatar color="primary">
-                <v-icon icon="mdi-account"></v-icon>
-              </v-avatar>
+            <template #prepend>
+              <VAvatar color="primary">
+                <VIcon icon="mdi-account"></VIcon>
+              </VAvatar>
             </template>
 
-            <v-list-item-title>{{ producer.name }}</v-list-item-title>
-            <v-list-item-subtitle>
-              {{ producer.location }} • {{ producer.distance }}
-            </v-list-item-subtitle>
+            <VListItemTitle>{{ producer.name }}</VListItemTitle>
+            <VListItemSubtitle>
+              <div class="d-flex align-center">
+                <VIcon icon="mdi-map-marker" size="16" class="mr-1" />
+                {{ producer.location }}
+                <VSpacer />
+                <VChip size="small" color="primary" variant="outlined">
+                  {{ producer.distance }}
+                </VChip>
+              </div>
+            </VListItemSubtitle>
 
-            <template v-slot:append>
+            <template #append>
               <PrimaryButton @click="goToProducer(producer)">
                 Voir la page
               </PrimaryButton>
             </template>
-          </v-list-item>
-        </v-list>
+          </VListItem>
+        </VList>
 
-        <!-- Message si aucun producteur -->
-        <div v-if="dialog.producers.length === 0" class="text-center mt-4">
-          <v-icon icon="mdi-information" size="48" color="grey"></v-icon>
+        <div v-else class="text-center mt-4">
+          <VIcon icon="mdi-information" size="48" color="grey"></VIcon>
           <p class="text-grey mt-2">Aucun producteur trouvé pour ce produit</p>
         </div>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
+      </VCardText>
+      <VCardActions>
+        <VSpacer />
         <TertiaryButton @click="dialog.show = false"> Fermer </TertiaryButton>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 
-  <!-- Snackbar pour les notifications -->
-  <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="3000">
+  <VSnackbar v-model="snackbar.show" :color="snackbar.color" timeout="3000">
     {{ snackbar.message }}
-    <template v-slot:actions>
-      <v-btn color="white" variant="text" @click="snackbar.show = false">
-        Fermer
-      </v-btn>
-    </template>
-  </v-snackbar>
+  </VSnackbar>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 
-// Données des produits (sans images, juste noms et catégories)
+const router = useRouter()
+
 const products = ref([
   {
     id: 1,
@@ -117,14 +118,12 @@ const products = ref([
   },
 ])
 
-// État du dialog pour les producteurs
 const dialog = reactive({
   show: false,
   product: null,
   producers: [],
 })
 
-// Snackbar pour les notifications
 const snackbar = reactive({
   show: false,
   message: '',
@@ -194,7 +193,7 @@ const producersDatabase = {
 }
 
 // Fonctions utilitaires pour les icônes et couleurs
-const getCategoryIcon = (category) => {
+const getCategoryIcon = category => {
   const icons = {
     Fruits: 'mdi-apple',
     'Produits laitiers': 'mdi-cow',
@@ -203,7 +202,7 @@ const getCategoryIcon = (category) => {
   return icons[category] || 'mdi-package-variant'
 }
 
-const getCategoryColor = (category) => {
+const getCategoryColor = category => {
   const colors = {
     Fruits: 'green',
     'Produits laitiers': 'blue',
@@ -213,23 +212,16 @@ const getCategoryColor = (category) => {
 }
 
 // Fonction pour afficher les producteurs
-const showProducers = (product) => {
+const showProducers = product => {
   dialog.product = product
   dialog.producers = producersDatabase[product.id] || []
   dialog.show = true
 }
 
 // Fonction pour naviguer vers la page du producteur
-const goToProducer = (producer) => {
-  // Ici vous pouvez utiliser Vue Router pour naviguer
-  // this.$router.push(`/producteur/${producer.slug}`)
-
-  console.log('Navigation vers le producteur:', producer)
-
-  // Simulation de la navigation
-  snackbar.message = `Navigation vers ${producer.name}`
-  snackbar.color = 'info'
-  snackbar.show = true
+const goToProducer = producer => {
+  router.push(`/producteur/${producer.id}`)
+  dialog.show = false
 }
 </script>
 
@@ -242,9 +234,15 @@ const goToProducer = (producer) => {
   transform: translateY(-4px);
 }
 
-.v-list-item {
+.producer-item {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   margin-bottom: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.producer-item:hover {
+  background-color: #f5f5f5;
 }
 </style>

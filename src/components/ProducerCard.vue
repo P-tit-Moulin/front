@@ -6,7 +6,7 @@
     <VCardSubtitle v-if="address" class="px-4 pt-4 pb-0">
       <span class="producer-card-subtitle">
         <VIcon color="$primary-grey" size="8">mdi-map-marker</VIcon
-        >{{ address }}</span
+        >{{ item?.address }}</span
       >
     </VCardSubtitle>
     <VCardText class="d-flex flex-column align-center pa-4 h-100">
@@ -19,42 +19,34 @@
         </VAvatar>
       </VCol>
       <VCol cols="12" class="d-flex flex-column align-center">
-        <span class="producer-name">{{ name }}</span>
-        <span class="producer-business mt-1">{{ business }}</span>
+        <span class="producer-name">{{ item?.label }}</span>
+        <span class="producer-business mt-1">{{ item?.category }}</span>
       </VCol>
       <VCol cols="12" class="producer-description">
-        {{ description }}
+        {{ item?.description }}
       </VCol>
     </VCardText>
     <VCardActions class="d-flex justify-center pb-4">
-      <PrimaryButton>Voir mes produits</PrimaryButton>
+      <PrimaryButton @click="$emit('goToProducer')"
+        >Voir mes produits</PrimaryButton
+      >
     </VCardActions>
   </VCard>
 </template>
 
 <script setup>
 defineProps({
-  name: {
-    type: String,
+  item: {
+    type: Object,
     required: true,
-  },
-  business: {
-    type: String,
-  },
-  address: {
-    type: String,
-  },
-  description: {
-    type: String,
-  },
-  profilPicture: {
-    type: String,
   },
   close: {
     type: Boolean,
     default: false,
   },
 })
+
+defineEmits(['close', 'goToProducer'])
 </script>
 
 <style lang="scss" scoped>

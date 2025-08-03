@@ -101,9 +101,8 @@
             cols="6"
           >
             <ProducerCard
-              :name="producer?.label"
-              :business="producer?.categorie"
-              :address="producer?.address"
+              :item="producer"
+              @go-to-producer="goToProducer(producer)"
             />
           </VCol>
         </VRow>
@@ -131,12 +130,10 @@
 
     <VDialog v-model="dialog" max-width="560">
       <ProducerCard
-        :name="producerData?.label"
-        :business="producerData?.categorie"
-        :address="producerData?.address"
-        :description="producerData?.description"
+        :item="producerData"
         close
         @close="dialog = !dialog"
+        @go-to-producer="goToProducer(producerData)"
       />
     </VDialog>
   </VRow>
@@ -148,11 +145,13 @@ import Map from '@/components/Map.vue'
 import ProducerCard from '@/components/ProducerCard.vue'
 import { useProducerStore } from '@/store/producer'
 import { useMapStore } from '@/store/map'
+import { useRouter } from 'vue-router'
 
 const dialog = ref(false)
 const producerData = ref(null)
 const producerStore = useProducerStore()
 const mapStore = useMapStore()
+const router = useRouter()
 const mapRef = ref(null)
 
 // État des filtres
@@ -365,6 +364,10 @@ onMounted(async () => {
     await producerStore.fetchProducers()
   }
 })
+
+const goToProducer = producer => {
+  router.push(`/producteur/${producer.id}`)
+}
 </script>
 
 <style lang="scss" scoped>
