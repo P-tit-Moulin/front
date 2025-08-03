@@ -2,7 +2,12 @@
   <VFooter class="footer-bg">
     <VRow class="d-flex">
       <VCol cols="5" class="d-flex flex-column justify-center align-center">
-        <img src="@/assets/img/logo.svg" width="177px" height="84px" />
+        <img
+          src="@/assets/img/logo.svg"
+          alt="Logo P'tit Moulin"
+          width="177px"
+          height="84px"
+        />
         <span class="img-subtitle"
           >Copyright 2022 - P’tit Moulin - Design par la X Force</span
         >

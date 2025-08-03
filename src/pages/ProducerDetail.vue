@@ -63,9 +63,9 @@
           Localisation
         </VCardTitle>
         <VCardText>
-          <div v-if="producer.address" class="d-flex align-center">
+          <div v-if="producer.adresse" class="d-flex align-center">
             <VIcon icon="mdi-map-marker" color="primary" class="mr-2" />
-            <span class="producer-address">{{ producer.address }}</span>
+            <span class="producer-address">{{ producer.adresse }}</span>
           </div>
           <p v-else class="text-grey text-center py-2">
             <VIcon icon="mdi-map-marker-off" class="mr-2" />
@@ -293,11 +293,11 @@
               </template>
 
               <VListItemTitle class="text-body-2">
-                {{ similar.label }}
+                {{ similar.name }}
               </VListItemTitle>
 
-              <VListItemSubtitle v-if="similar.address" class="text-caption">
-                {{ similar.address }}
+              <VListItemSubtitle v-if="similar.adresse" class="text-caption">
+                {{ similar.adresse }}
               </VListItemSubtitle>
 
               <template #append>
@@ -328,7 +328,7 @@
         Le producteur demandé n'existe pas ou n'a pas encore été chargé.
       </p>
       <div class="d-flex gap-2 justify-center">
-        <PrimaryButton @click="loadProducers">
+        <PrimaryButton class="mr-2" @click="loadProducers">
           Charger les producteurs
         </PrimaryButton>
         <SecondaryButton @click="$router.push('/producer-map')">

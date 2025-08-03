@@ -1,61 +1,85 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '@/config/api'
 
 export const useMapStore = defineStore('map', {
   state: () => ({
     coordinates: [],
-    producer: null,
     loading: false,
     loaded: false,
+    page: 1,
+    limit: 100,
+    total: 0,
   }),
 
-  actions: {
-    async fetchCoordinates() {
-      if (this.loaded) return
+  getters: {
+    hasMore: state => state.page * state.limit < state.total,
+  },
 
+  actions: {
+    async fetchCoordinates({
+      longitude,
+      latitude,
+      radius = 10,
+      geo = false,
+      page = this.page,
+      limit = this.limit,
+    } = {}) {
       this.loading = true
 
-      const allCoordinates = []
-      const pageSize = 1000
-      let start = 0
-      let fetched = 0
-
       try {
-        do {
-          const url = `https://data.opendatasoft.com/api/records/1.0/search/?dataset=flux-toutes-plateformes%40producteursagri&rows=${pageSize}&start=${start}`
+        let url = '/producers'
+        const params = {}
 
-          const response = await axios.get(url, {
-            headers: { Accept: 'application/json' },
-          })
-          const records = response.data.records || []
+        if (geo && longitude != null && latitude != null) {
+          params.geometry = `${longitude},${latitude}`
+          params.radius = radius
+        } else if (longitude != null && latitude != null) {
+          url = '/producers/nearby/search'
+          params.longitude = longitude
+          params.latitude = latitude
+          params.radius = radius
+        }
 
-          records.forEach(record => {
-            const f = record.fields
-            const geo = f.geolocalisation
-            if (Array.isArray(geo) && geo.length === 2) {
-              allCoordinates.push({
-                id: record.recordid,
-                lat: geo[0],
-                lng: geo[1],
-                label: f.nom || f.raison_sociale || 'Producteur inconnu',
-              })
-            }
-          })
+        params.page = page
+        params.limit = limit
 
-          fetched += records.length
-          start += pageSize
-        } while (fetched < 1000)
+        const response = await api.get(url, { params })
 
-        this.coordinates = allCoordinates
+        const { data = [], total = 0 } = response.data
+
+        if (page === 1) {
+          this.coordinates = data.map(item => ({
+            id: item.id,
+            lat: item.geometry.coordinates[1],
+            lng: item.geometry.coordinates[0],
+            label: item.nom,
+          }))
+        } else {
+          this.coordinates.push(
+            ...data.map(item => ({
+              id: item.id,
+              lat: item.geometry.coordinates[1],
+              lng: item.geometry.coordinates[0],
+              label: item.nom,
+            }))
+          )
+        }
+
+        this.total = total
+        this.page = page
+        this.limit = limit
         this.loaded = true
-      } catch (err) {
-        console.error(
-          'Error occurred while fetching coordinates from the API:',
-          err
-        )
+      } catch (error) {
+        console.error('Erreur lors du chargement des coordonnées:', error)
+        throw error
       } finally {
         this.loading = false
       }
+    },
+
+    async fetchNextPage(options = {}) {
+      if (!this.hasMore || this.loading) return
+      await this.fetchCoordinates({ ...options, page: this.page + 1 })
     },
   },
 })

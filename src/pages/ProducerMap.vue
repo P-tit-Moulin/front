@@ -4,7 +4,7 @@
     <VCol cols="5">
       <VRow class="my-6">
         <!-- Filtre par nom -->
-        <VCol cols="12" md="4">
+        <VCol cols="12" md="6">
           <VTextField
             v-model="filters.name"
             label="Rechercher par nom"
@@ -15,21 +15,8 @@
           />
         </VCol>
 
-        <!-- Filtre par catégorie -->
-        <VCol cols="12" md="4">
-          <VSelect
-            v-model="filters.category"
-            :items="producerStore.allCategories"
-            label="Filtrer par catégorie"
-            prepend-inner-icon="mdi-tag"
-            clearable
-            variant="outlined"
-            density="compact"
-          />
-        </VCol>
-
-        <!-- Filtre par ville -->
-        <VCol cols="12" md="4">
+        <!-- Filtre par ville (com_name) -->
+        <VCol cols="12" md="6">
           <VSelect
             v-model="filters.city"
             :items="producerStore.allCities"
@@ -110,264 +97,210 @@
         <!-- Message si aucun résultat -->
         <VRow v-if="!producerStore.loading && filteredProducers.length === 0">
           <VCol cols="12" class="text-center">
-            <VAlert type="info" variant="outlined">
-              <VIcon>mdi-information-outline</VIcon>
-              Aucun producteur ne correspond à vos critères de recherche.
-            </VAlert>
+            <VIcon icon="mdi-information" size="48" color="grey" />
+            <p class="text-grey mt-2">
+              Aucun producteur trouvé avec ces filtres
+            </p>
           </VCol>
         </VRow>
       </VContainer>
     </VCol>
 
-    <VCol cols="7" class="h-100">
-      <Map
-        ref="mapRef"
-        :coordinates="filteredCoordinates"
-        :user-location="userLocationWithRadius"
-        @marker-click="handleMarkerClick"
-      />
+    <!-- Carte -->
+    <VCol cols="7">
+      <VCard class="filter-card" height="600">
+        <VCardTitle>
+          <VIcon icon="mdi-map" class="mr-2" />
+          Carte des producteurs
+        </VCardTitle>
+        <VCardText>
+          <Map
+            ref="mapRef"
+            :coordinates="filteredCoordinates"
+            :user-location="userLocationWithRadius"
+            @marker-click="handleMarkerClick"
+          />
+        </VCardText>
+      </VCard>
     </VCol>
-
-    <VDialog v-model="dialog" max-width="560">
-      <ProducerCard
-        :item="producerData"
-        close
-        @close="dialog = !dialog"
-        @go-to-producer="goToProducer(producerData)"
-      />
-    </VDialog>
   </VRow>
+
+  <!-- Dialog détail producteur -->
+  <VDialog v-model="dialog" max-width="500">
+    <VCard v-if="producerData">
+      <VCardTitle>{{ producerData.label }}</VCardTitle>
+      <VCardText>
+        <p>
+          <strong>Ville:</strong> {{ producerData.com_name || 'Non spécifiée' }}
+        </p>
+        <p>
+          <strong>Adresse:</strong>
+          {{ producerData.adresse || 'Non spécifiée' }}
+        </p>
+        <p>
+          <strong>Description:</strong>
+          {{ producerData.description || 'Aucune description disponible' }}
+        </p>
+      </VCardText>
+      <VCardActions>
+        <VSpacer />
+        <TertiaryButton @click="dialog = false">Fermer</TertiaryButton>
+        <PrimaryButton @click="goToProducer(producerData)">
+          Voir le profil
+        </PrimaryButton>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
-import Map from '@/components/Map.vue'
-import ProducerCard from '@/components/ProducerCard.vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useProducerStore } from '@/store/producer'
 import { useMapStore } from '@/store/map'
-import { useRouter } from 'vue-router'
+import ProducerCard from '@/components/ProducerCard.vue'
+import Map from '@/components/Map.vue'
+
+const router = useRouter()
+const producerStore = useProducerStore()
+const mapStore = useMapStore()
 
 const dialog = ref(false)
 const producerData = ref(null)
-const producerStore = useProducerStore()
-const mapStore = useMapStore()
-const router = useRouter()
+const locationLoading = ref(false)
+const userLocation = ref(null)
 const mapRef = ref(null)
 
-// État des filtres
-const filters = ref({
+// Filtres : plus de category, on utilise com_name pour la ville
+const filters = reactive({
   name: '',
-  category: '',
   city: '',
   proximityRadius: 20,
 })
 
-// Géolocalisation
-const userLocation = ref(null)
-const locationLoading = ref(false)
-
-// Fonction pour extraire la ville de l'adresse
-function extractCityFromAddress(address) {
-  if (!address) return null
-  const patterns = [
-    /\d{5}\s+(.+?)(?:,|$)/,
-    /^(.+?)\s+\d{5}/,
-    /,\s*(.+?)(?:,|$)/,
-  ]
-
-  for (const pattern of patterns) {
-    const match = address.match(pattern)
-    if (match) {
-      return match[1].trim()
-    }
-  }
-
-  const parts = address.split(',')
-  if (parts.length > 1) {
-    return parts[parts.length - 1].trim()
-  }
-
-  return address.trim()
-}
-
-// Fonction pour calculer la distance entre deux points (formule de Haversine)
-function calculateDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371 // Rayon de la Terre en km
+// Distance haversine
+function calculateDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371
   const dLat = ((lat2 - lat1) * Math.PI) / 180
-  const dLon = ((lon2 - lon1) * Math.PI) / 180
+  const dLng = ((lng2 - lng1) * Math.PI) / 180
   const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLat / 2) ** 2 +
     Math.cos((lat1 * Math.PI) / 180) *
       Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2)
+      Math.sin(dLng / 2) ** 2
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
   return R * c
 }
 
 // Producteurs filtrés
 const filteredProducers = computed(() => {
-  let filtered = [...producerStore.producerList] // Utilise le getter qui retourne un tableau
+  let result = producerStore.producerList
 
-  // Filtre par nom
-  if (filters.value.name) {
-    const searchTerm = filters.value.name.toLowerCase()
-    filtered = filtered.filter(
-      producer =>
-        producer.label?.toLowerCase().includes(searchTerm) ||
-        producer.categorie?.toLowerCase().includes(searchTerm) ||
-        producer.description?.toLowerCase().includes(searchTerm)
-    )
+  if (filters.name) {
+    result = producerStore.searchProducers(filters.name)
   }
-
-  // Filtre par catégorie
-  if (filters.value.category) {
-    filtered = filtered.filter(
-      producer => producer.categorie === filters.value.category
-    )
+  if (filters.city) {
+    result = result.filter(p => p.com_name === filters.city)
   }
-
-  // Filtre par ville
-  if (filters.value.city) {
-    filtered = filtered.filter(producer => {
-      const city = extractCityFromAddress(producer.address)
-      return city === filters.value.city
+  if (userLocation.value) {
+    result = result.filter(p => {
+      const coord = mapStore.coordinates.find(c => c.id === p.id)
+      if (!coord) return false
+      return (
+        calculateDistance(
+          userLocation.value.lat,
+          userLocation.value.lng,
+          coord.lat,
+          coord.lng
+        ) <= filters.proximityRadius
+      )
     })
   }
-
-  // Filtre par proximité
-  if (userLocation.value && filters.value.proximityRadius) {
-    filtered = filtered.filter(producer => {
-      const coordinate = mapStore.coordinates.find(
-        coord => coord.id === producer.id
-      )
-      if (!coordinate) return false
-
-      const distance = calculateDistance(
-        userLocation.value.lat,
-        userLocation.value.lng,
-        coordinate.lat,
-        coordinate.lng
-      )
-      return distance <= filters.value.proximityRadius
-    })
-  }
-
-  return filtered
+  return result
 })
 
-// Coordonnées filtrées pour la carte
+// Coordonnées pour la carte
 const filteredCoordinates = computed(() => {
-  const filteredIds = filteredProducers.value.map(p => p.id)
-  return mapStore.coordinates.filter(coord => filteredIds.includes(coord.id))
+  const ids = filteredProducers.value.map(p => p.id)
+  return mapStore.coordinates.filter(c => ids.includes(c.id))
 })
 
-// Computed pour inclure le rayon dans la localisation utilisateur
 const userLocationWithRadius = computed(() => {
   if (!userLocation.value) return null
-
-  return {
-    ...userLocation.value,
-    radius: filters.value.proximityRadius,
-  }
+  return { ...userLocation.value, radius: filters.proximityRadius }
 })
 
-// Fonction pour obtenir la géolocalisation
+// Géolocalisation
 async function getUserLocation() {
   if (!navigator.geolocation) {
     alert("La géolocalisation n'est pas supportée par ce navigateur.")
     return
   }
-
   locationLoading.value = true
-
   try {
-    const position = await new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject, {
+    const pos = await new Promise((res, rej) =>
+      navigator.geolocation.getCurrentPosition(res, rej, {
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 300000,
       })
-    })
-
-    userLocation.value = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-    }
-  } catch (error) {
-    console.error('Erreur de géolocalisation:', error)
-    alert(
-      "Impossible d'obtenir votre position. Vérifiez vos paramètres de géolocalisation."
     )
+    userLocation.value = {
+      lat: pos.coords.latitude,
+      lng: pos.coords.longitude,
+    }
+  } catch {
+    alert("Impossible d'obtenir votre position.")
   } finally {
     locationLoading.value = false
   }
 }
 
-// Fonction pour effacer les filtres
+// Réinitialiser filtres
 function clearFilters() {
-  filters.value = {
-    name: '',
-    category: '',
-    city: '',
-    proximityRadius: 20,
-  }
+  filters.name = ''
+  filters.city = ''
+  filters.proximityRadius = 20
   userLocation.value = null
 }
 
+// Ouverture du dialog au clic sur un marqueur
 async function handleMarkerClick(coord) {
-  try {
-    // Utilise le getter synchrone ou l'action async selon le besoin
-    producerData.value =
-      producerStore.getProducerById(coord.id) ||
-      (await producerStore.getProducerByIdAsync(coord.id))
-    dialog.value = true
-  } catch (e) {
-    console.error(e)
+  producerData.value = producerStore.getProducerById(coord.id)
+  if (!producerData.value) {
+    producerData.value = await producerStore.getProducerByIdAsync(coord.id)
   }
+  dialog.value = true
 }
 
-// Watcher pour mettre à jour le cercle de proximité quand le rayon change
-watch(
-  () => filters.value.proximityRadius,
-  newRadius => {
-    if (mapRef.value && userLocation.value) {
-      mapRef.value.updateProximityRadius(newRadius)
-    }
-  }
-)
+// Navigation vers la page détail
+function goToProducer(p) {
+  router.push(`/producteur/${p.id}`)
+}
 
-// Watcher pour sauvegarder les filtres dans le localStorage (optionnel)
+// Sauvegarde des filtres
 watch(
   filters,
-  newFilters => {
-    localStorage.setItem('producerFilters', JSON.stringify(newFilters))
-  },
+  f => localStorage.setItem('producerFilters', JSON.stringify(f)),
   { deep: true }
 )
 
 onMounted(async () => {
-  // Restaurer les filtres sauvegardés
-  const savedFilters = localStorage.getItem('producerFilters')
-  if (savedFilters) {
+  // restauration des filtres
+  const saved = localStorage.getItem('producerFilters')
+  if (saved) {
     try {
-      const parsed = JSON.parse(savedFilters)
-      filters.value = { ...filters.value, ...parsed }
+      Object.assign(filters, JSON.parse(saved))
     } catch (e) {
       console.error('Erreur lors de la restauration des filtres:', e)
     }
   }
-
-  // Charger les données de la carte et des producteurs
-  if (!mapStore.loading) {
-    await mapStore.fetchCoordinates()
-    await producerStore.fetchProducers()
-  }
+  // appels store
+  await Promise.all([
+    producerStore.fetchProducers(),
+    mapStore.fetchCoordinates(),
+  ])
 })
-
-const goToProducer = producer => {
-  router.push(`/producteur/${producer.id}`)
-}
 </script>
 
 <style lang="scss" scoped>
@@ -375,7 +308,6 @@ const goToProducer = producer => {
   overflow-y: auto;
   max-height: 600px;
 }
-
 .filter-card {
   border: 1px solid #61c187;
 }

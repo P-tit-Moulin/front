@@ -8,7 +8,7 @@
     fixed
     class="navbar"
   >
-    <VTab><img src="@/assets/img/logo.svg" /></VTab>
+    <VTab><img src="@/assets/img/logo.svg" alt="Logo P'tit Moulin" /></VTab>
     <v-spacer />
     <VTab :value="1" to="/" class="navbar-tab">Accueil</VTab>
     <VTab :value="2" to="/product-list" class="navbar-tab">Produits</VTab>

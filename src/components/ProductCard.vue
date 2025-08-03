@@ -20,6 +20,7 @@ defineProps({
   },
   address: {
     type: String,
+    default: '',
   },
 })
 </script>

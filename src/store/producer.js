@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '@/config/api'
 
 export const useProducerStore = defineStore('producer', {
   state: () => ({
@@ -13,14 +13,14 @@ export const useProducerStore = defineStore('producer', {
 
     getProducerById: state => id => state.producers[id] || null,
 
-    // Nouveau: Obtenir les producteurs par catégorie
+    // Obtenir les producteurs par catégorie
     getProducersByCategory: state => category => {
       return Object.values(state.producers).filter(
         producer => producer.category === category
       )
     },
 
-    // Nouveau: Obtenir toutes les catégories uniques
+    // Obtenir toutes les catégories uniques
     allCategories: state => {
       const categories = Object.values(state.producers)
         .map(producer => producer.category)
@@ -28,7 +28,7 @@ export const useProducerStore = defineStore('producer', {
       return [...new Set(categories)]
     },
 
-    // Nouveau: Obtenir toutes les villes uniques
+    // Obtenir toutes les villes uniques
     allCities: state => {
       const cities = Object.values(state.producers)
         .map(producer => producer.address)
@@ -36,7 +36,7 @@ export const useProducerStore = defineStore('producer', {
       return [...new Set(cities)]
     },
 
-    // Nouveau: Recherche de producteurs
+    // Recherche de producteurs
     searchProducers: state => query => {
       const searchTerm = query.toLowerCase()
       return Object.values(state.producers).filter(
@@ -53,48 +53,48 @@ export const useProducerStore = defineStore('producer', {
     async fetchProducers() {
       if (this.loaded) return
 
-      this.loaded = true
-
-      const allProducers = {}
-      const pageSize = 1000
-      let start = 0
-      let fetched = 0
+      this.loading = true
 
       try {
-        do {
-          const url = `https://data.opendatasoft.com/api/records/1.0/search/?dataset=flux-toutes-plateformes%40producteursagri&rows=${pageSize}&start=${start}`
+        // Appel à votre API backend
+        const response = await api.get('/producers')
 
-          const response = await axios.get(url, {
-            headers: { Accept: 'application/json' },
-          })
-
-          const records = response.data.records || []
-
-          records.forEach(record => {
-            const f = record.fields
-            const id = record.recordid
-
-            allProducers[id] = {
-              id,
-              label: f.nom ?? f.raison_sociale ?? 'Producteur inconnu',
-              description: f.description ?? '',
-              address: f.com_name ?? '',
-              category: f.categorie ?? '',
-              familles_des_produits: f.familles_des_produits || [],
-              familles_des_produits_restreintes:
-                f.familles_des_produits_restreintes || [],
-            }
-          })
-
-          fetched += records.length
-          start += pageSize
-        } while (fetched < 1000)
+        const allProducers = {}
+        console.log(response)
+        response.data.data.forEach(producer => {
+          allProducers[producer.id] = {
+            id: producer.id,
+            label: producer.nom || 'Producteur inconnu',
+            description: producer.description || '',
+            address: producer.adresse || '',
+            code_postal: producer.code_postal || '',
+            com_name: producer.com_name || '',
+            familles_des_produits: producer.familles_des_produits || [],
+            familles_des_produits_restreintes:
+              producer.familles_des_produits_restreintes || [],
+            // Ajoutez d'autres champs selon votre modèle backend
+          }
+        })
 
         this.producers = allProducers
-      } catch (err) {
-        console.error('Failed to fetch producers from the API:', err)
+        this.loaded = true
+      } catch (error) {
+        console.error('Erreur lors du chargement des producteurs:', error)
+        throw error
       } finally {
         this.loading = false
+      }
+    },
+
+    // Méthode pour récupérer un producteur spécifique (si besoin)
+    async getProducerByIdAsync(id) {
+      try {
+        const response = await api.get(`/producers/${id}`)
+        this.producers[id] = response.data
+        return response.data
+      } catch (error) {
+        console.error(`Erreur lors du chargement du producteur ${id}:`, error)
+        throw error
       }
     },
   },
