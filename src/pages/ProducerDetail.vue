@@ -16,33 +16,17 @@
     <!-- En-tête avec nom et catégorie -->
     <VCol cols="12" class="producer-header">
       <div class="d-flex align-center mb-4">
-        <VIcon
-          :icon="getCategoryIcon(producer.category)"
-          size="48"
-          :color="getCategoryColor(producer.category)"
-          class="mr-4"
-        />
+        <VIcon icon="mdi-store" size="48" color="#61c187" class="mr-4" />
         <div>
-          <h1 class="producer-name">{{ producer.label }}</h1>
-          <p class="producer-business">{{ producer.category }}</p>
+          <h1 class="producer-name">{{ producer.nom }}</h1>
         </div>
       </div>
-
-      <!-- Badge catégorie -->
-      <VChip
-        :color="getCategoryColor(producer.category)"
-        size="large"
-        class="mb-4"
-      >
-        <VIcon start :icon="getCategoryIcon(producer.category)" />
-        {{ producer.category }}
-      </VChip>
     </VCol>
 
     <VCol cols="12" md="8" style="margin-bottom: 100px">
       <VCard class="mb-6">
         <VCardTitle class="d-flex align-center">
-          <VIcon icon="mdi-text-box" class="mr-2" />
+          <VIcon icon="mdi-text-box" color="#61c187" class="mr-2" />
           Description
         </VCardTitle>
         <VCardText>
@@ -59,13 +43,15 @@
       <!-- Adresse -->
       <VCard class="mb-6">
         <VCardTitle class="d-flex align-center">
-          <VIcon icon="mdi-map-marker" class="mr-2" />
+          <VIcon icon="mdi-map-marker" color="#61c187" class="mr-2" />
           Localisation
         </VCardTitle>
         <VCardText>
           <div v-if="producer.adresse" class="d-flex align-center">
-            <VIcon icon="mdi-map-marker" color="primary" class="mr-2" />
-            <span class="producer-address">{{ producer.adresse }}</span>
+            <span class="producer-address"
+              >{{ producer.adresse }}, {{ producer.com_name }},
+              {{ producer.code_postal }}</span
+            >
           </div>
           <p v-else class="text-grey text-center py-2">
             <VIcon icon="mdi-map-marker-off" class="mr-2" />
@@ -76,7 +62,7 @@
 
       <VCard class="mb-8">
         <VCardTitle class="d-flex align-center">
-          <VIcon icon="mdi-package-variant" class="mr-2" />
+          <VIcon icon="mdi-package" color="#61c187" class="mr-2" />
           Produits proposés
         </VCardTitle>
         <VCardText>
@@ -168,36 +154,6 @@
                   {{ producer.familles_des_produits_restreintes?.length || 0 }}
                 </div>
                 <div class="text-caption">Produits</div>
-              </div>
-            </VCol>
-            <VCol cols="6" sm="3">
-              <div class="text-center">
-                <VIcon
-                  icon="mdi-identifier"
-                  size="32"
-                  color="orange"
-                  class="mb-2"
-                />
-                <div class="text-caption">ID</div>
-                <div class="text-caption font-mono">
-                  {{ producer.id.substring(0, 8) }}...
-                </div>
-              </div>
-            </VCol>
-            <VCol cols="6" sm="3">
-              <div class="text-center">
-                <VIcon
-                  :icon="
-                    producer.category ? 'mdi-check-circle' : 'mdi-help-circle'
-                  "
-                  size="32"
-                  :color="producer.category ? 'success' : 'grey'"
-                  class="mb-2"
-                />
-                <div class="text-caption">Catégorie</div>
-                <div class="text-caption">
-                  {{ producer.category ? 'Définie' : 'Non définie' }}
-                </div>
               </div>
             </VCol>
           </VRow>
@@ -347,11 +303,13 @@
 import { reactive, onMounted, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useProducerStore } from '@/store/producer'
+import api from '@/config/api.js'
 
 const route = useRoute()
 const router = useRouter()
 const producerStore = useProducerStore()
 const loading = ref(false)
+const producer = ref({})
 
 // Snackbar pour les notifications
 const snackbar = reactive({
@@ -386,11 +344,6 @@ const parsedFamillesProduits = computed(() => {
 const parsedFamillesRestreintes = computed(() => {
   if (!producer.value) return []
   return parseFamilies(producer.value.familles_des_produits_restreintes)
-})
-
-const producer = computed(() => {
-  const id = route.params.id
-  return producerStore.getProducerById(id)
 })
 
 const hasProducts = computed(() => {
@@ -546,8 +499,12 @@ const loadProducers = async () => {
 }
 
 onMounted(async () => {
-  if (!producerStore.loaded) {
-    await producerStore.fetchProducers()
+  try {
+    const id = route.params.id
+    const res = await api.get(`/producers/${id}`)
+    producer.value = res.data?.data || null
+  } catch (e) {
+    console.error('Erreur chargement producteur', e)
   }
 })
 </script>

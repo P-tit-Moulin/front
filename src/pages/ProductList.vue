@@ -8,7 +8,7 @@
       md="4"
       class="mt-6"
     >
-      <VCard class="mx-auto" max-width="400" elevation="4" hover>
+      <VCard class="mx-auto" max-width="400" hover>
         <div class="text-center pa-4">
           <VIcon
             :icon="getCategoryIcon(product.category)"
@@ -192,7 +192,6 @@ const producersDatabase = {
   ],
 }
 
-// Fonctions utilitaires pour les icônes et couleurs
 const getCategoryIcon = category => {
   const icons = {
     Fruits: 'mdi-apple',

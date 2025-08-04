@@ -13,13 +13,13 @@
       <VCol cols="12" class="d-flex justify-center">
         <VAvatar size="91">
           <img
-            :alt="item?.label"
+            :alt="item?.nom"
             src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
           />
         </VAvatar>
       </VCol>
       <VCol cols="12" class="d-flex flex-column align-center">
-        <span class="producer-name">{{ item?.label }}</span>
+        <span class="producer-name">{{ item?.nom }}</span>
       </VCol>
       <VCol cols="12" class="producer-description">
         {{ item?.description }}
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   item: {
     type: Object,
     required: true,
@@ -44,6 +44,8 @@ defineProps({
     default: false,
   },
 })
+
+console.log(props.item)
 
 defineEmits(['close', 'goToProducer'])
 </script>
@@ -84,5 +86,11 @@ defineEmits(['close', 'goToProducer'])
 
 .producer-description {
   font-weight: 400;
+  height: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 150px;
+  max-height: 150px;
 }
 </style>
