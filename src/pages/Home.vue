@@ -18,17 +18,44 @@
     </VCol>
   </VRow>
   <VRow class="home-product-card">
-    <VCol cols="12" class="mb-12">
-      <span class="product-black-title"> Les </span>
-      <span class="product-green-title">produits</span>
-      <span class="product-black-title"> proposés. </span>
+    <VCol cols="12" class="d-flex align-center justify-space-between mb-12">
+      <div>
+        <span class="product-black-title"> Les </span>
+        <span class="product-green-title">produits</span>
+        <span class="product-black-title"> proposés. </span>
+      </div>
+
+      <PrimaryButton @click="$router.push('/product-list')">
+        Voir toutes les produits
+      </PrimaryButton>
     </VCol>
-    <VCol v-for="product in products" :key="product.id" cols="4">
-      <ProductCard :title="product.title" :image="product.image" />
+    <VCol
+      v-for="(family, index) in productFamilies.slice(0, 4)"
+      :key="index"
+      cols="12"
+      sm="4"
+      md="3"
+      class="mt-4"
+    >
+      <ProductCard class="mx-auto" hover>
+        <template #title>
+          {{ family }}
+        </template>
+
+        <template #text>
+          <div class="text-center">
+            <VIcon
+              :icon="getFamilyIcon(family)"
+              size="80"
+              :color="getFamilyColor(family)"
+            ></VIcon>
+          </div>
+        </template>
+      </ProductCard>
     </VCol>
   </VRow>
   <VRow>
-    <VCol cols="12" class="home-map d-flex flex-column">
+    <VCol cols="12" class="home-map d-flex flex-column mb-8">
       <div class="d-flex flex-column py-6">
         <span class="map-title w-50"
           >Trouver le producteur directement sur la carte</span
@@ -39,99 +66,28 @@
         >
       </div>
 
-      <PrimaryButton class="map-button mt-6">Voir la carte !</PrimaryButton>
-    </VCol>
-  </VRow>
-  <VRow class="home-producer-card">
-    <VCol cols="12" class="mb-12 mt-8">
-      <span class="product-black-title"> Nos </span>
-      <span class="product-green-title">artisans</span>
-      <span class="product-black-title"> ont du talent. </span>
-    </VCol>
-    <VCol v-for="producer in producers" :key="producer.id" cols="3">
-      <ProducerCard :item="producer" @go-to-producer="goToProducer(producer)" />
-    </VCol>
-    <VCol cols="12" class="d-flex justify-center my-8">
-      <span class="producer-subtitle-grey">Découvrez l’ensemble de nos</span>
-      <span class="producer-subtitle-green">&nbsp;<a>artisans</a>&nbsp; </span>
-      <span class="producer-subtitle-grey">à votre service !</span>
+      <PrimaryButton
+        class="map-button mt-6"
+        @click="$router.push('/producer-map')"
+        >Voir la carte !</PrimaryButton
+      >
     </VCol>
   </VRow>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useProducerStore } from '@/store/producer'
 import ProductCard from '@/components/ProductCard.vue'
-import ProducerCard from '@/components/ProducerCard.vue'
-import { useRouter } from 'vue-router'
+import { getFamilyIcon, getFamilyColor } from '@/utils/familyUtils'
 
-const router = useRouter()
+const producerStore = useProducerStore()
+const productFamilies = ref([])
 
-const products = ref([
-  {
-    id: 1,
-    title: 'Pomme',
-  },
-  {
-    id: 2,
-    title: 'Carotte',
-  },
-  {
-    id: 3,
-    title: 'Tomate',
-  },
-  {
-    id: 4,
-    title: 'Banane',
-  },
-  {
-    id: 5,
-    title: 'Courgette',
-  },
-  {
-    id: 6,
-    title: 'Raisin',
-  },
-])
-
-const producers = ref([
-  {
-    id: 1,
-    name: 'Julie Moreau',
-    business: 'Maraîchère bio',
-    address: 'Nantes',
-    description:
-      'Julie cultive des légumes de saison en permaculture, dans le respect de la biodiversité locale.',
-  },
-  {
-    id: 2,
-    name: 'Marc Dubois',
-    business: 'Apiculteur',
-    address: 'Lyon',
-    description:
-      'Marc élève des abeilles dans les Monts du Lyonnais et produit un miel naturel et non transformé.',
-  },
-  {
-    id: 3,
-    name: 'Sophie Garnier',
-    business: 'Productrice de fruits',
-    address: 'Avignon',
-    description:
-      'Sophie cultive des vergers de pêchers, d’abricotiers et de cerisiers dans le Sud de la France.',
-  },
-  {
-    id: 4,
-    name: 'Thomas Lefèvre',
-    business: 'Éleveur de chèvres',
-    address: 'Limoges',
-    description:
-      'Thomas produit du fromage de chèvre fermier avec passion, dans une ferme familiale depuis trois générations.',
-  },
-])
-
-const goToProducer = producer => {
-  router.push(`/producteur/${producer.id}`)
-}
+onMounted(async () => {
+  const data = await producerStore.fetchProductFamilies()
+  productFamilies.value = data.familles_des_produits
+})
 </script>
 
 <style lang="scss" scoped>
@@ -206,31 +162,5 @@ const goToProducer = producer => {
 
 .map-button {
   width: fit-content;
-}
-
-.home-producer-card {
-  background-image: url('@/assets/img/vegetable_bg.svg');
-  background-color: rgba(97, 193, 135, 0.1);
-  background-size: cover;
-  background-position-y: center;
-  padding-inline: 280px;
-  margin-top: 112px;
-  margin-bottom: 230px;
-}
-
-.producer-subtitle-grey,
-.producer-subtitle-green {
-  font-size: 0.875rem;
-  letter-spacing: 0;
-  line-height: 100%;
-  font-weight: 400;
-}
-
-.producer-subtitle-grey {
-  color: $primary-grey;
-}
-
-.producer-subtitle-green {
-  color: $primary-green;
 }
 </style>

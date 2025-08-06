@@ -5,7 +5,7 @@
         <img
           src="@/assets/img/logo.svg"
           alt="Logo P'tit Moulin"
-          width="140px"
+          width="100px"
           height="84px"
         />
         <span class="img-subtitle"

@@ -1,113 +1,106 @@
 <template>
   <VRow>
-    <!-- Contenu principal -->
     <VCol cols="5">
-      <VRow class="my-6">
-        <!-- Filtre par nom -->
-        <VCol cols="12" md="6">
-          <VTextField
-            v-model="filters.name"
-            label="Rechercher par nom"
-            prepend-inner-icon="mdi-magnify"
-            clearable
-            variant="outlined"
-            density="compact"
-          />
-        </VCol>
+      <VCard class="filter-card">
+        <VContainer fluid>
+          <VRow>
+            <VCol cols="12" md="6">
+              <VTextField
+                v-model="filters.name"
+                label="Rechercher par nom"
+                prepend-inner-icon="mdi-magnify"
+                clearable
+                variant="outlined"
+                density="compact"
+              />
+            </VCol>
+            <VCol cols="12" md="6">
+              <VSelect
+                v-model="filters.city"
+                :items="producerStore.allCities"
+                label="Filtrer par ville"
+                prepend-inner-icon="mdi-map-marker"
+                clearable
+                variant="outlined"
+                density="compact"
+              />
+            </VCol>
+            <VCol cols="6">
+              <VSlider
+                v-model="filters.proximityRadius"
+                :min="1"
+                :max="100"
+                :step="1"
+                color="#61c187"
+                label="Rayon (km)"
+                thumb-label
+              />
+            </VCol>
+            <VCol cols="auto" class="pl-2">
+              <SecondaryButton
+                :color="filters.userLocation ? '#61C187' : 'primary'"
+                :disabled="locationLoading"
+                :loading="locationLoading"
+                @click="getUserLocation"
+              >
+                <VIcon>{{
+                  filters.userLocation ? 'mdi-check' : 'mdi-crosshairs-gps'
+                }}</VIcon>
+                {{ filters.userLocation ? 'Localisé' : 'Me localiser' }}
+              </SecondaryButton>
+            </VCol>
+            <VCol cols="auto" class="text-right">
+              <SecondaryButton class="mr-2" @click="clearFilters">
+                Effacer les filtres
+              </SecondaryButton>
+              <VChip
+                v-if="
+                  filteredProducers.length !== producerStore.producerList.length
+                "
+                color="#61C187"
+                variant="outlined"
+              >
+                {{ filteredProducers.length }} /
+                {{ producerStore.producerList.length }} producteurs
+              </VChip>
+            </VCol>
+          </VRow>
+        </VContainer>
 
-        <!-- Filtre par ville (com_name) -->
-        <VCol cols="12" md="6">
-          <VSelect
-            v-model="filters.city"
-            :items="producerStore.allCities"
-            label="Filtrer par ville"
-            prepend-inner-icon="mdi-map-marker"
-            clearable
-            variant="outlined"
-            density="compact"
-          />
-        </VCol>
+        <VContainer class="producer-container">
+          <VRow v-if="producerStore.loading">
+            <VCol cols="12" class="text-center">
+              <VProgressCircular indeterminate color="primary" />
+              <p class="mt-2">Chargement des producteurs...</p>
+            </VCol>
+          </VRow>
 
-        <!-- Filtre par proximité -->
-        <VCol cols="12">
-          <VSlider
-            v-model="filters.proximityRadius"
-            :min="1"
-            :max="100"
-            :step="1"
-            color="#61c187"
-            label="Rayon (km)"
-            :disabled="!filters.userLocation"
-            thumb-label
-          />
-        </VCol>
-        <VCol cols="auto" class="pl-2">
-          <TertiaryButton
-            :color="filters.userLocation ? '#61C187' : 'primary'"
-            :disabled="locationLoading"
-            :loading="locationLoading"
-            @click="getUserLocation"
-          >
-            <VIcon>{{
-              filters.userLocation ? 'mdi-check' : 'mdi-crosshairs-gps'
-            }}</VIcon>
-            {{ filters.userLocation ? 'Localisé' : 'Me localiser' }}
-          </TertiaryButton>
-        </VCol>
-        <VCol cols="auto" class="text-right">
-          <SecondaryButton class="mr-2" @click="clearFilters">
-            Effacer les filtres
-          </SecondaryButton>
-          <VChip
-            v-if="
-              filteredProducers.length !== producerStore.producerList.length
-            "
-            color="#61C187"
-            variant="outlined"
-          >
-            {{ filteredProducers.length }} /
-            {{ producerStore.producerList.length }} producteurs
-          </VChip>
-        </VCol>
-      </VRow>
+          <VRow v-else>
+            <VCol
+              v-for="producer in filteredProducers"
+              :key="producer.id"
+              cols="6"
+            >
+              <ProducerCard
+                :item="producer"
+                @go-to-producer="goToProducer(producer)"
+              />
+            </VCol>
+          </VRow>
 
-      <VContainer class="producer-container">
-        <!-- Loading state -->
-        <VRow v-if="producerStore.loading">
-          <VCol cols="12" class="text-center">
-            <VProgressCircular indeterminate color="primary" />
-            <p class="mt-2">Chargement des producteurs...</p>
-          </VCol>
-        </VRow>
-
-        <!-- Liste des producteurs -->
-        <VRow v-else>
-          <VCol
-            v-for="producer in filteredProducers"
-            :key="producer.id"
-            cols="6"
-          >
-            <ProducerCard
-              :item="producer"
-              @go-to-producer="goToProducer(producer)"
-            />
-          </VCol>
-        </VRow>
-
-        <!-- Message si aucun résultat -->
-        <VRow v-if="!producerStore.loading && filteredProducers.length === 0">
-          <VCol cols="12" class="text-center">
-            <VIcon icon="mdi-information" size="48" color="grey" />
-            <p class="text-grey mt-2">
-              Aucun producteur trouvé avec ces filtres
-            </p>
-          </VCol>
-        </VRow>
-      </VContainer>
+          <VRow v-if="!producerStore.loading && filteredProducers.length === 0">
+            <VCol cols="12" class="text-center">
+              <VIcon icon="mdi-information" size="48" color="grey" />
+              <p class="text-grey mt-2">
+                Aucun producteur trouvé avec ces filtres
+              </p>
+            </VCol>
+          </VRow>
+        </VContainer>
+      </VCard>
     </VCol>
 
-    <!-- Carte -->
-    <VCol cols="7" class="mt-6">
+    <VCol cols="7">
       <Map
         ref="mapRef"
         :coordinates="filteredCoordinates"
@@ -117,7 +110,6 @@
     </VCol>
   </VRow>
 
-  <!-- Dialog détail producteur -->
   <VDialog v-model="dialog" max-width="500">
     <ProducerCard
       :item="producerData"
@@ -223,9 +215,10 @@ onMounted(() => {
 <style lang="scss" scoped>
 .producer-container {
   overflow-y: auto;
-  max-height: 600px;
+  max-height: 500px;
 }
 .filter-card {
-  border: 1px solid #61c187;
+  border: none !important;
+  height: calc(100vh - 180px);
 }
 </style>

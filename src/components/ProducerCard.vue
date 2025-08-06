@@ -90,7 +90,5 @@ defineEmits(['close', 'goToProducer'])
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 150px;
-  max-height: 150px;
 }
 </style>

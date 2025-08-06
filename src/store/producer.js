@@ -31,6 +31,9 @@ export const useProducerStore = defineStore('producerStore', {
 
         if (filters.name) params.nom = filters.name
         if (filters.city) params.com_name = filters.city
+        if (filters.family) params.familles_des_produits = filters.family
+        if (filters.page) params.page = filters.page
+        if (filters.limit) params.limit = filters.limit
 
         if (filters.userLocation && filters.proximityRadius) {
           const { latitude, longitude } = filters.userLocation
@@ -69,6 +72,23 @@ export const useProducerStore = defineStore('producerStore', {
       } catch (e) {
         console.error(`Erreur getProducerByIdAsync(${id})`, e)
         return null
+      }
+    },
+    async fetchProductFamilies() {
+      try {
+        const res = await api.get('/producers/families/all')
+        return (
+          res.data?.data || {
+            familles_des_produits: [],
+            familles_des_produits_restreintes: [],
+          }
+        )
+      } catch (e) {
+        console.error('Erreur fetchProductFamilies', e)
+        return {
+          familles_des_produits: [],
+          familles_des_produits_restreintes: [],
+        }
       }
     },
   },

@@ -1,36 +1,33 @@
 <template>
-  <VRow>
+  <VRow class="product-list">
     <VCol
-      v-for="product in products"
-      :key="product.id"
+      v-for="(family, index) in productFamilies"
+      :key="index"
       cols="12"
-      sm="6"
-      md="4"
-      class="mt-6"
+      sm="4"
+      md="3"
+      class="mt-4"
     >
-      <VCard class="mx-auto" max-width="400" hover>
-        <div class="text-center pa-4">
-          <VIcon
-            :icon="getCategoryIcon(product.category)"
-            size="80"
-            :color="getCategoryColor(product.category)"
-          ></VIcon>
-        </div>
+      <ProductCard class="mx-auto" hover>
+        <template #title>
+          {{ family }}
+        </template>
+        <template #text>
+          <div class="text-center">
+            <VIcon
+              :icon="getFamilyIcon(family)"
+              size="80"
+              :color="getFamilyColor(family)"
+            ></VIcon>
+          </div>
+        </template>
 
-        <VCardTitle class="text-h6 text-center">
-          {{ product.name }}
-        </VCardTitle>
-
-        <VCardSubtitle class="text-center">
-          {{ product.category }}
-        </VCardSubtitle>
-
-        <VCardActions class="justify-end">
-          <PrimaryButton @click="showProducers(product)">
+        <template #actions>
+          <PrimaryButton @click="showProducersByFamily(family)">
             Voir les producteurs
           </PrimaryButton>
-        </VCardActions>
-      </VCard>
+        </template>
+      </ProductCard>
     </VCol>
   </VRow>
 
@@ -46,26 +43,23 @@
 
       <VCardText style="height: 400px">
         <VList v-if="dialog.producers.length > 0">
+          {{ console.log(dialog.producers) }}
           <VListItem
             v-for="producer in dialog.producers"
             :key="producer.id"
             class="mb-2"
           >
             <template #prepend>
-              <VAvatar color="primary">
+              <VAvatar color="#61c187">
                 <VIcon icon="mdi-account"></VIcon>
               </VAvatar>
             </template>
 
-            <VListItemTitle>{{ producer.name }}</VListItemTitle>
+            <VListItemTitle>{{ producer.nom }}</VListItemTitle>
             <VListItemSubtitle>
               <div class="d-flex align-center">
                 <VIcon icon="mdi-map-marker" size="16" class="mr-1" />
-                {{ producer.location }}
-                <VSpacer />
-                <VChip size="small" color="primary" variant="outlined">
-                  {{ producer.distance }}
-                </VChip>
+                {{ producer.com_name }}
               </div>
             </VListItemSubtitle>
 
@@ -95,28 +89,16 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
+import { useProducerStore } from '@/store/producer'
 import { useRouter } from 'vue-router'
+import { getFamilyIcon, getFamilyColor } from '@/utils/familyUtils'
+import ProductCard from '@/components/ProductCard.vue'
 
 const router = useRouter()
 
-const products = ref([
-  {
-    id: 1,
-    name: 'Pommes',
-    category: 'Fruits',
-  },
-  {
-    id: 2,
-    name: 'Lait',
-    category: 'Produits laitiers',
-  },
-  {
-    id: 3,
-    name: 'Viande',
-    category: 'Boucherie',
-  },
-])
+const producerStore = useProducerStore()
+const productFamilies = ref([])
 
 const dialog = reactive({
   show: false,
@@ -130,109 +112,25 @@ const snackbar = reactive({
   color: 'success',
 })
 
-// Données simulées des producteurs (à remplacer par un appel API)
-const producersDatabase = {
-  1: [
-    // Pommes
-    {
-      id: 101,
-      name: 'Ferme Martin',
-      location: 'Normandie',
-      distance: '15 km',
-      slug: 'ferme-martin',
-    },
-    {
-      id: 102,
-      name: 'Vergers Dupont',
-      location: 'Bretagne',
-      distance: '25 km',
-      slug: 'vergers-dupont',
-    },
-    {
-      id: 103,
-      name: 'Bio Fruits Leclerc',
-      location: 'Loire',
-      distance: '30 km',
-      slug: 'bio-fruits-leclerc',
-    },
-  ],
-  2: [
-    // Lait
-    {
-      id: 201,
-      name: 'Laiterie Moreau',
-      location: 'Pays de la Loire',
-      distance: '12 km',
-      slug: 'laiterie-moreau',
-    },
-    {
-      id: 202,
-      name: 'Ferme Bio Rousseau',
-      location: 'Centre',
-      distance: '18 km',
-      slug: 'ferme-bio-rousseau',
-    },
-  ],
-  3: [
-    // Viande
-    {
-      id: 301,
-      name: 'Boucherie Traditionnelle',
-      location: 'Local',
-      distance: '8 km',
-      slug: 'boucherie-traditionnelle',
-    },
-    {
-      id: 302,
-      name: 'Élevage Bio Lambert',
-      location: 'Champagne',
-      distance: '22 km',
-      slug: 'elevage-bio-lambert',
-    },
-  ],
-}
-
-const getCategoryIcon = category => {
-  const icons = {
-    Fruits: 'mdi-apple',
-    'Produits laitiers': 'mdi-cow',
-    Boucherie: 'mdi-food-steak',
-  }
-  return icons[category] || 'mdi-package-variant'
-}
-
-const getCategoryColor = category => {
-  const colors = {
-    Fruits: 'green',
-    'Produits laitiers': 'blue',
-    Boucherie: 'red',
-  }
-  return colors[category] || 'grey'
-}
-
-// Fonction pour afficher les producteurs
-const showProducers = product => {
+const showProducersByFamily = async product => {
   dialog.product = product
-  dialog.producers = producersDatabase[product.id] || []
+  await producerStore.fetchProducers({ family: product })
+  dialog.producers = producerStore.producerList
   dialog.show = true
 }
 
-// Fonction pour naviguer vers la page du producteur
 const goToProducer = producer => {
   router.push(`/producteur/${producer.id}`)
   dialog.show = false
 }
+
+onMounted(async () => {
+  const data = await producerStore.fetchProductFamilies()
+  productFamilies.value = data.familles_des_produits
+})
 </script>
 
-<style scoped>
-.v-card {
-  transition: transform 0.2s ease-in-out;
-}
-
-.v-card:hover {
-  transform: translateY(-4px);
-}
-
+<style lang="scss" scoped>
 .producer-item {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -243,5 +141,9 @@ const goToProducer = producer => {
 
 .producer-item:hover {
   background-color: #f5f5f5;
+}
+
+.product-list {
+  margin-bottom: 100px;
 }
 </style>

@@ -23,24 +23,7 @@
       </div>
     </VCol>
 
-    <VCol cols="12" md="8" style="margin-bottom: 100px">
-      <VCard class="mb-6">
-        <VCardTitle class="d-flex align-center">
-          <VIcon icon="mdi-text-box" color="#61c187" class="mr-2" />
-          Description
-        </VCardTitle>
-        <VCardText>
-          <p v-if="producer.description" class="producer-description">
-            {{ producer.description }}
-          </p>
-          <p v-else class="text-grey text-center py-4">
-            <VIcon icon="mdi-information-outline" class="mr-2" />
-            Aucune description disponible pour ce producteur.
-          </p>
-        </VCardText>
-      </VCard>
-
-      <!-- Adresse -->
+    <VCol cols="12" md="4" class="d-flex align-center justify-center w-100">
       <VCard class="mb-6">
         <VCardTitle class="d-flex align-center">
           <VIcon icon="mdi-map-marker" color="#61c187" class="mr-2" />
@@ -56,6 +39,24 @@
           <p v-else class="text-grey text-center py-2">
             <VIcon icon="mdi-map-marker-off" class="mr-2" />
             Adresse non renseignée
+          </p>
+        </VCardText>
+      </VCard>
+    </VCol>
+
+    <VCol cols="12" md="8" style="margin-bottom: 100px">
+      <VCard class="mb-6">
+        <VCardTitle class="d-flex align-center">
+          <VIcon icon="mdi-text-box" color="#61c187" class="mr-2" />
+          Description
+        </VCardTitle>
+        <VCardText>
+          <p v-if="producer.description" class="producer-description">
+            {{ producer.description }}
+          </p>
+          <p v-else class="text-grey text-center py-4">
+            <VIcon icon="mdi-information-outline" class="mr-2" />
+            Aucune description disponible pour ce producteur.
           </p>
         </VCardText>
       </VCard>
@@ -81,11 +82,11 @@
               <VChip
                 v-for="famille in parsedFamillesProduits"
                 :key="famille"
-                :color="getProductFamilyColor(famille)"
+                :color="getFamilyColor(famille)"
                 variant="outlined"
                 size="small"
               >
-                <VIcon start :icon="getProductFamilyIcon(famille)" />
+                <VIcon start :icon="getFamilyIcon(famille)" />
                 {{ famille }}
               </VChip>
             </div>
@@ -120,159 +121,6 @@
           </div>
         </VCardText>
       </VCard>
-
-      <VCard>
-        <VCardTitle class="d-flex align-center">
-          <VIcon icon="mdi-chart-box" class="mr-2" />
-          Informations complémentaires
-        </VCardTitle>
-        <VCardText>
-          <VRow>
-            <VCol cols="6" sm="3">
-              <div class="text-center">
-                <VIcon
-                  icon="mdi-tag-multiple"
-                  size="32"
-                  color="primary"
-                  class="mb-2"
-                />
-                <div class="text-h6">
-                  {{ producer.familles_des_produits?.length || 0 }}
-                </div>
-                <div class="text-caption">Catégories</div>
-              </div>
-            </VCol>
-            <VCol cols="6" sm="3">
-              <div class="text-center">
-                <VIcon
-                  icon="mdi-package-variant"
-                  size="32"
-                  color="green"
-                  class="mb-2"
-                />
-                <div class="text-h6">
-                  {{ producer.familles_des_produits_restreintes?.length || 0 }}
-                </div>
-                <div class="text-caption">Produits</div>
-              </div>
-            </VCol>
-          </VRow>
-        </VCardText>
-      </VCard>
-    </VCol>
-
-    <!-- Sidebar avec actions -->
-    <VCol cols="12" md="4" class="mb-8">
-      <VCard class="sticky-card">
-        <VCardTitle class="d-flex align-center">
-          <VIcon icon="mdi-phone" class="mr-2" />
-          Contact & Actions
-        </VCardTitle>
-        <VCardText>
-          <!-- Informations de contact -->
-          <div v-if="producer.contact" class="mb-4">
-            <div v-if="producer.contact.phone" class="mb-2">
-              <SecondaryButton block :href="`tel:${producer.contact.phone}`">
-                <VIcon start icon="mdi-phone" />
-                {{ producer.contact.phone }}
-              </SecondaryButton>
-            </div>
-            <div v-if="producer.contact.email" class="mb-2">
-              <SecondaryButton block :href="`mailto:${producer.contact.email}`">
-                <VIcon start icon="mdi-email" />
-                Envoyer un email
-              </SecondaryButton>
-            </div>
-            <div v-if="producer.contact.website" class="mb-2">
-              <SecondaryButton
-                block
-                :href="producer.contact.website"
-                target="_blank"
-              >
-                <VIcon start icon="mdi-web" />
-                Site web
-              </SecondaryButton>
-            </div>
-          </div>
-
-          <!-- Actions -->
-          <VDivider class="my-4" />
-
-          <PrimaryButton block class="mb-3" @click="showOnMap">
-            <VIcon start icon="mdi-map" />
-            Voir sur la carte
-          </PrimaryButton>
-
-          <TertiaryButton block @click="shareProducer">
-            <VIcon start icon="mdi-share" />
-            Partager
-          </TertiaryButton>
-
-          <VDivider class="my-4" />
-
-          <div class="mb-4">
-            <h4 class="mb-2">
-              <VIcon icon="mdi-account-group" class="mr-1" />
-              Producteurs similaires
-            </h4>
-            <PrimaryButton
-              variant="outlined"
-              size="small"
-              block
-              @click="findSimilarProducers"
-            >
-              <VIcon start icon="mdi-magnify" />
-              Rechercher
-            </PrimaryButton>
-          </div>
-        </VCardText>
-      </VCard>
-      <VCard v-if="similarProducers.length > 0" class="mt-4">
-        <VCardTitle class="d-flex align-center">
-          <VIcon icon="mdi-account-group" class="mr-2" />
-          Même catégorie
-        </VCardTitle>
-        <VCardText>
-          <VList density="compact">
-            <VListItem
-              v-for="similar in similarProducers.slice(0, 3)"
-              :key="similar.id"
-              class="similar-producer-item"
-              @click="goToProducer(similar.id)"
-            >
-              <template #prepend>
-                <VIcon
-                  :icon="getCategoryIcon(similar.category)"
-                  :color="getCategoryColor(similar.category)"
-                  size="20"
-                />
-              </template>
-
-              <VListItemTitle class="text-body-2">
-                {{ similar.name }}
-              </VListItemTitle>
-
-              <VListItemSubtitle v-if="similar.adresse" class="text-caption">
-                {{ similar.adresse }}
-              </VListItemSubtitle>
-
-              <template #append>
-                <VIcon size="16">mdi-chevron-right</VIcon>
-              </template>
-            </VListItem>
-          </VList>
-
-          <div v-if="similarProducers.length > 3" class="text-center mt-2">
-            <SecondaryButton
-              size="small"
-              variant="text"
-              @click="showAllSimilar"
-            >
-              Voir {{ similarProducers.length - 3 }} autres
-            </SecondaryButton>
-          </div>
-        </VCardText>
-      </VCard>
     </VCol>
   </VRow>
 
@@ -301,13 +149,11 @@
 
 <script setup>
 import { reactive, onMounted, computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useProducerStore } from '@/store/producer'
+import { useRoute } from 'vue-router'
 import api from '@/config/api.js'
+import { getFamilyIcon, getFamilyColor } from '@/utils/familyUtils'
 
 const route = useRoute()
-const router = useRouter()
-const producerStore = useProducerStore()
 const loading = ref(false)
 const producer = ref({})
 
@@ -356,148 +202,6 @@ const hasProducts = computed(() => {
   )
 })
 
-const similarProducers = computed(() => {
-  if (!producer.value || !producer.value.category) return []
-
-  return producerStore.producerList
-    .filter(
-      p => p.id !== producer.value.id && p.category === producer.value.category
-    )
-    .slice(0, 10)
-})
-
-const getCategoryIcon = category => {
-  const icons = {
-    'Fruits et légumes': 'mdi-carrot',
-    'Produits laitiers': 'mdi-cow',
-    Boucherie: 'mdi-food-steak',
-    Volaille: 'mdi-chicken',
-    Charcuterie: 'mdi-sausage',
-    Poissons: 'mdi-fish',
-    Céréales: 'mdi-barley',
-    Légumineuses: 'mdi-peas',
-    Épices: 'mdi-chili-mild',
-    Boissons: 'mdi-bottle-wine',
-    Miel: 'mdi-bee',
-    Pain: 'mdi-bread-slice',
-    Fromage: 'mdi-cheese',
-  }
-  return icons[category] || 'mdi-store'
-}
-
-const getCategoryColor = category => {
-  const colors = {
-    'Fruits et légumes': 'green',
-    'Produits laitiers': 'blue',
-    Boucherie: 'red',
-    Volaille: 'orange',
-    Charcuterie: 'deep-orange',
-    Poissons: 'cyan',
-    Céréales: 'amber',
-    Légumineuses: 'light-green',
-    Épices: 'red-accent-2',
-    Boissons: 'purple',
-    Miel: 'yellow-darken-2',
-    Pain: 'brown',
-    Fromage: 'yellow',
-  }
-  return colors[category] || 'grey'
-}
-
-const getProductFamilyIcon = famille => {
-  const icons = {
-    Légumes: 'mdi-carrot',
-    Fruits: 'mdi-apple',
-    Viandes: 'mdi-food-steak',
-    'Produits laitiers': 'mdi-cow',
-    Céréales: 'mdi-barley',
-    Boissons: 'mdi-cup',
-    Miel: 'mdi-bee',
-    Épices: 'mdi-chili-mild',
-  }
-  return icons[famille] || 'mdi-tag'
-}
-
-const getProductFamilyColor = famille => {
-  const colors = {
-    Légumes: 'green',
-    Fruits: 'orange',
-    Viandes: 'red',
-    'Produits laitiers': 'blue',
-    Céréales: 'amber',
-    Boissons: 'purple',
-    Miel: 'yellow-darken-2',
-    Épices: 'red-accent-2',
-  }
-  return colors[famille] || 'primary'
-}
-
-// Actions
-const showOnMap = () => {
-  router.push({
-    name: 'ProducerMap',
-    query: { producer: producer.value.id },
-  })
-}
-
-const shareProducer = () => {
-  if (navigator.share) {
-    navigator.share({
-      title: producer.value.label,
-      text: producer.value.description || `Découvrez ${producer.value.label}`,
-      url: window.location.href,
-    })
-  } else {
-    navigator.clipboard.writeText(window.location.href)
-    snackbar.message = 'Lien copié dans le presse-papiers'
-    snackbar.color = 'info'
-    snackbar.show = true
-  }
-}
-
-const findSimilarProducers = () => {
-  if (!producer.value.category) {
-    snackbar.message = 'Aucune catégorie définie pour ce producteur'
-    snackbar.color = 'warning'
-    snackbar.show = true
-    return
-  }
-
-  router.push({
-    name: 'ProducerMap',
-    query: {
-      category: producer.value.category,
-      exclude: producer.value.id,
-    },
-  })
-}
-
-const goToProducer = producerId => {
-  router.push(`/producteur/${producerId}`)
-}
-
-const showAllSimilar = () => {
-  router.push({
-    name: 'ProducerMap',
-    query: { category: producer.value.category },
-  })
-}
-
-const loadProducers = async () => {
-  try {
-    await producerStore.fetchProducers()
-    if (!producer.value) {
-      snackbar.message = 'Producteur toujours introuvable après chargement'
-      snackbar.color = 'error'
-      snackbar.show = true
-    }
-  } catch (error) {
-    snackbar.message = `Erreur lors du chargement des producteurs: ${error && error.message ? error.message : error}`
-    snackbar.color = 'error'
-    snackbar.show = true
-  }
-}
-
 onMounted(async () => {
   try {
     const id = route.params.id
@@ -515,7 +219,10 @@ onMounted(async () => {
 }
 
 .producer-header {
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e8 100%);
+  background-image:
+    url('@/assets/img/vegetable_bg.svg'),
+    linear-gradient(135deg, #f5f5f5 0%, #e8f5e8 100%);
+  background-size: cover;
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
