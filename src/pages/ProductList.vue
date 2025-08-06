@@ -43,7 +43,6 @@
 
       <VCardText style="height: 400px">
         <VList v-if="dialog.producers.length > 0">
-          {{ console.log(dialog.producers) }}
           <VListItem
             v-for="producer in dialog.producers"
             :key="producer.id"
