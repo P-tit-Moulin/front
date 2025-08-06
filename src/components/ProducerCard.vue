@@ -45,7 +45,6 @@ const props = defineProps({
   },
 })
 
-console.log(props.item)
 
 defineEmits(['close', 'goToProducer'])
 </script>
