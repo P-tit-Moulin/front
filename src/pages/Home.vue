@@ -26,7 +26,7 @@
       </div>
 
       <PrimaryButton @click="$router.push('/product-list')">
-        Voir toutes les produits
+        Voir tous les produits
       </PrimaryButton>
     </VCol>
     <VCol
