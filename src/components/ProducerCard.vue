@@ -3,24 +3,23 @@
     <VCardTitle v-if="close" class="d-flex justify-end pb-2">
       <TertiaryButton icon="mdi-close" @click="$emit('close')" />
     </VCardTitle>
-    <VCardSubtitle v-if="address" class="px-4 pt-4 pb-0">
+    <VCardSubtitle v-if="item?.com_name" class="px-4 pt-4 pb-0">
       <span class="producer-card-subtitle">
         <VIcon color="$primary-grey" size="8">mdi-map-marker</VIcon
-        >{{ item?.address }}</span
+        >{{ item?.com_name }}</span
       >
     </VCardSubtitle>
     <VCardText class="d-flex flex-column align-center pa-4 h-100">
       <VCol cols="12" class="d-flex justify-center">
         <VAvatar size="91">
           <img
-            :alt="name"
+            :alt="item?.nom"
             src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
           />
         </VAvatar>
       </VCol>
       <VCol cols="12" class="d-flex flex-column align-center">
-        <span class="producer-name">{{ item?.label }}</span>
-        <span class="producer-business mt-1">{{ item?.category }}</span>
+        <span class="producer-name">{{ item?.nom }}</span>
       </VCol>
       <VCol cols="12" class="producer-description">
         {{ item?.description }}
@@ -35,7 +34,7 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   item: {
     type: Object,
     required: true,
@@ -45,6 +44,7 @@ defineProps({
     default: false,
   },
 })
+
 
 defineEmits(['close', 'goToProducer'])
 </script>
@@ -85,5 +85,9 @@ defineEmits(['close', 'goToProducer'])
 
 .producer-description {
   font-weight: 400;
+  height: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

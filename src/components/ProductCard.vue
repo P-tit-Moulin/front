@@ -1,14 +1,14 @@
 <template>
-  <VCard class="product-card">
-    <VCardText class="d-flex pa-0 h-100">
-      <VCol cols="7" class="card-title d-flex flex-column">
-        <span class="product-card-title mb-1">{{ title }}</span>
-        <span v-if="address" class="product-card-subtitle">
-          <VIcon color="$primary-grey" size="8">mdi-map-marker</VIcon
-          >{{ address }}</span
-        >
-      </VCol>
+  <VCard class="product-card fill-height">
+    <VCardTitle class="product-card-title">
+      <slot name="title"></slot>
+    </VCardTitle>
+    <VCardText class="product-text pa-4">
+      <slot name="text"></slot>
     </VCardText>
+    <VCardActions class="justify-end">
+      <slot name="actions"></slot>
+    </VCardActions>
   </VCard>
 </template>
 
@@ -20,18 +20,19 @@ defineProps({
   },
   address: {
     type: String,
+    default: '',
   },
 })
 </script>
 
 <style lang="scss" scoped>
 .product-card {
-  height: 137px;
-}
-
-.card-title {
   background-image: url('@/assets/img/vegetable_bg.svg');
   background-size: cover;
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(-4px);
+  }
 }
 
 .product-card-title {
@@ -40,13 +41,5 @@ defineProps({
   line-height: 100%;
   letter-spacing: 0;
   font-size: 0.875rem;
-}
-
-.product-card-subtitle {
-  color: $primary-grey;
-  font-weight: 400;
-  line-height: 100%;
-  letter-spacing: 0;
-  font-size: 0.625rem;
 }
 </style>
