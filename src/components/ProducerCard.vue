@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   item: {
     type: Object,
     required: true,
@@ -44,7 +44,6 @@ const props = defineProps({
     default: false,
   },
 })
-
 
 defineEmits(['close', 'goToProducer'])
 </script>

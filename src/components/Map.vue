@@ -1,5 +1,9 @@
 <template>
-  <div ref="mapElement" style="height: 600px; width: 100%"></div>
+  <div
+    ref="mapElement"
+    data-testid="map-element"
+    style="height: 600px; width: 100%"
+  ></div>
 </template>
 
 <script setup>

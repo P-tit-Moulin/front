@@ -12,18 +12,7 @@
   </VCard>
 </template>
 
-<script setup>
-defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-    default: '',
-  },
-})
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 .product-card {
