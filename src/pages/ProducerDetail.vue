@@ -13,7 +13,6 @@
     class="producer-detail-page"
     style="margin-bottom: 100px"
   >
-    <!-- En-tête avec nom et catégorie -->
     <VCol cols="12" class="producer-header">
       <div class="d-flex align-center mb-4">
         <VIcon icon="mdi-store" size="48" color="#61c187" class="mr-4" />
@@ -157,7 +156,6 @@ const route = useRoute()
 const loading = ref(false)
 const producer = ref({})
 
-// Snackbar pour les notifications
 const snackbar = reactive({
   show: false,
   message: '',

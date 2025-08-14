@@ -18,7 +18,6 @@ describe('App Integration', () => {
       },
     })
 
-    // Check if main layout components are rendered
     expect(wrapper.findComponent({ name: 'NavBar' }).exists()).toBe(true)
     expect(wrapper.findComponent({ name: 'Footer' }).exists()).toBe(true)
     expect(wrapper.find('.app-container').exists()).toBe(true)
@@ -42,7 +41,6 @@ describe('App Integration', () => {
       },
     })
 
-    // Navigate to test route
     await router.push('/test')
     await wrapper.vm.$nextTick()
 

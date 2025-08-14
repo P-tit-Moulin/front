@@ -30,9 +30,7 @@ describe('NavBar', () => {
     })
 
     await wrapper.vm.$nextTick()
-    console.log('HTML:', wrapper.html())
 
-    // Test plus flexible pour l'image
     const hasLogo =
       wrapper.html().includes('Logo') ||
       wrapper.html().includes("P'tit Moulin") ||
@@ -51,16 +49,13 @@ describe('NavBar', () => {
     })
 
     await wrapper.vm.$nextTick()
-    console.log('HTML for links:', wrapper.html())
 
-    // Chercher les liens de navigation avec une approche plus flexible
     const links =
       wrapper.findAll('a') ||
       wrapper.findAll('[to]') ||
       wrapper.findAll('router-link')
 
     if (links.length > 0) {
-      // Vérifier les routes ou les textes plutôt que les attributs 'to'
       const linkTexts = links.map(link => link.text())
       expect(linkTexts.some(text => text.includes('Accueil'))).toBe(true)
     }

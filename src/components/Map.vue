@@ -86,7 +86,6 @@ function updateMarkers(coords) {
 function updateUserLocation(location) {
   if (!map.value) return
 
-  // Clear existing if any
   if (userMarker.value) {
     map.value.removeLayer(userMarker.value)
     userMarker.value = null
@@ -107,7 +106,7 @@ function updateUserLocation(location) {
     }).addTo(map.value)
 
     userCircle.value = L.circle(latlng, {
-      radius: location.radius * 1000, // km → m
+      radius: location.radius * 1000,
       color: '#61C187',
       fillColor: '#61C187',
       fillOpacity: 0.2,

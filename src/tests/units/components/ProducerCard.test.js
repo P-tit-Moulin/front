@@ -41,7 +41,6 @@ describe('ProducerCard - Simple', () => {
 
     await wrapper.vm.$nextTick()
 
-    // Test direct des émissions d'événements
     await wrapper.vm.$emit('goToProducer')
     await wrapper.vm.$emit('close')
 

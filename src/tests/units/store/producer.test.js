@@ -3,7 +3,6 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useProducerStore } from '@/store/producer'
 import api from '@/config/api'
 
-// Mock de l'API
 vi.mock('@/config/api', () => ({
   default: {
     get: vi.fn(),
@@ -39,7 +38,7 @@ describe('Producer Store', () => {
       {
         id: 2,
         nom: 'Producer 2',
-        geometry: null, // Should be filtered out
+        geometry: null,
       },
       {
         id: 3,
@@ -112,8 +111,8 @@ describe('Producer Store', () => {
         data: [
           { com_name: 'Paris' },
           { com_name: 'Lyon' },
-          { com_name: 'Paris' }, // Duplicate
-          { com_name: null }, // Should be filtered
+          { com_name: 'Paris' },
+          { com_name: null },
           { com_name: 'Marseille' },
         ],
       },
@@ -124,7 +123,7 @@ describe('Producer Store', () => {
     const store = useProducerStore()
     await store.fetchAllCities()
 
-    expect(store.allCities).toEqual(['Lyon', 'Marseille', 'Paris']) // Sorted
+    expect(store.allCities).toEqual(['Lyon', 'Marseille', 'Paris'])
   })
 
   it('getProducerByIdAsync returns producer data', async () => {

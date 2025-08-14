@@ -8,9 +8,7 @@ export default defineConfig({
     globals: true,
     environment: 'happy-dom',
     setupFiles: ['./src/tests/setup.js'],
-    // Désactive complètement le traitement CSS
     css: false,
-    // Mock tous les fichiers CSS/SCSS automatiquement
     server: {
       deps: {
         inline: ['vuetify'],
@@ -22,7 +20,6 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  // Configuration pour ignorer les CSS
   esbuild: {
     target: 'node14',
   },

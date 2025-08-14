@@ -3,15 +3,15 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import ProducerMap from '@/pages/ProducerMap.vue'
 
-// Mock du store
 const mockStore = {
   producers: [],
   loading: false,
   fetchProducers: vi.fn(),
   clearFilters: vi.fn(),
+  fetchAllCities: vi.fn(),
 }
 
-vi.mock('@/stores/producer', () => ({
+vi.mock('@/store/producer', () => ({
   useProducerStore: () => mockStore,
 }))
 

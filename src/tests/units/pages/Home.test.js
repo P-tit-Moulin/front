@@ -13,14 +13,13 @@ describe('Home', () => {
   })
 
   it('fetches product families on mount', async () => {
-    // Mock du store directement
     const mockStore = {
       fetchProductFamilies: vi.fn(),
       productFamilies: [],
       loading: false,
     }
 
-    vi.doMock('@/stores/producer', () => ({
+    vi.doMock('@/store/producer', () => ({
       useProducerStore: () => mockStore,
     }))
 
@@ -32,7 +31,6 @@ describe('Home', () => {
 
     await wrapper.vm.$nextTick()
 
-    // Le test peut être simplifié pour vérifier que le composant se monte
     expect(wrapper.exists()).toBe(true)
   })
 })

@@ -6,7 +6,6 @@ describe('familyUtils', () => {
     it('returns correct icons for known families', () => {
       expect(getFamilyIcon('Légumes')).toBe('mdi-carrot')
       expect(getFamilyIcon('Fruits')).toBe('mdi-food-apple')
-      // Supprimé 'Céréales' car il n'existe pas dans votre mapping
     })
 
     it('returns default icon for unknown families', () => {
@@ -20,7 +19,6 @@ describe('familyUtils', () => {
     it('returns correct colors for known families', () => {
       expect(getFamilyColor('Légumes')).toBe('light-green')
       expect(getFamilyColor('Fruits')).toBe('green')
-      // Supprimé 'Céréales' car il n'existe pas dans votre mapping
     })
 
     it('returns default color for unknown families', () => {

@@ -18,17 +18,14 @@ describe('Router Integration', () => {
       },
     })
 
-    // Test navigation to product list
     await testRouter.push('/product-list')
     await wrapper.vm.$nextTick()
     expect(testRouter.currentRoute.value.path).toBe('/product-list')
 
-    // Test navigation to producer map
     await testRouter.push('/producer-map')
     await wrapper.vm.$nextTick()
     expect(testRouter.currentRoute.value.path).toBe('/producer-map')
 
-    // Test navigation to producer detail with params
     await testRouter.push('/producteur/123')
     await wrapper.vm.$nextTick()
     expect(testRouter.currentRoute.value.path).toBe('/producteur/123')
