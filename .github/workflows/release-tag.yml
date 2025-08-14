@@ -75,7 +75,7 @@ jobs:
           VERSION_TYPE=${{ env.VERSION_TYPE }}
           TARGET_BRANCH="${{ github.base_ref }}"
 
-          # Nettoyer la version actuelle (retirer -pre-prod si présent)
+          # Clean the current version (remove -pre-prod if present)
           CLEAN_VERSION=$(echo $CURRENT_VERSION | sed 's/-pre-prod//')
 
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CLEAN_VERSION"
