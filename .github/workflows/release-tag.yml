@@ -124,7 +124,7 @@ jobs:
           if echo "$PR_BODY" | grep -q "#changelog"; then
             CHANGELOG=$(echo "$PR_BODY" | sed -n '/#changelog/,$p' | sed '1d' | sed '/^[[:space:]]*$/d')
           else
-            # Générer un changelog basé sur le type de version
+            # Generate a changelog based on the version type
             case ${{ env.VERSION_TYPE }} in
               major)
                 CHANGELOG="- 🔥 Breaking changes in version ${{ env.FULL_VERSION }}"
