@@ -118,7 +118,7 @@ jobs:
 
       - name: Extract changelog from PR body
         run: |
-          # Décoder le corps de la PR depuis base64
+          # Decode the PR body from base64
           PR_BODY=$(echo "${{ env.PR_BODY_B64 }}" | base64 -d)
 
           if echo "$PR_BODY" | grep -q "#changelog"; then
