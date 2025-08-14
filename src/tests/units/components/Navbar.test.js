@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
-import Navbar from '@/components/Navbar.vue'
+import Navbar from '@/components/NavBar.vue'
 
 const router = createRouter({
   history: createWebHistory(),
