@@ -80,7 +80,7 @@ jobs:
 
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CLEAN_VERSION"
 
-          # Incrémenter selon le type détecté
+          # Increment according to the detected type
           case $VERSION_TYPE in
             major)
               MAJOR=$((MAJOR + 1))
