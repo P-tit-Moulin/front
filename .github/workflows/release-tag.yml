@@ -59,7 +59,7 @@ jobs:
           elif echo "$PR_TITLE" | grep -qi "#fix\|#hotfix\|#patch"; then
             VERSION_TYPE="patch"
           else
-            # Par défaut, si aucun tag n'est trouvé, on fait un patch
+            # By default, if no tag is found, we do a patch
             VERSION_TYPE="patch"
             echo "⚠️ Warning: No version tag found in PR title. Defaulting to patch version."
           fi
