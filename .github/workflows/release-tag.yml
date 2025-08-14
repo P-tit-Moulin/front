@@ -46,7 +46,7 @@ jobs:
           echo "$PR_TITLE" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-          # Sauvegarder le corps en base64 pour éviter les problèmes de caractères spéciaux
+          # Save the body in base64 to avoid issues with special characters
           PR_BODY_B64=$(echo "$PR_BODY" | base64 -w 0)
           echo "PR_BODY_B64=${PR_BODY_B64}" >> $GITHUB_ENV
 
