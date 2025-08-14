@@ -195,7 +195,7 @@ jobs:
             patch) VERSION_ICON="🔧" ;;
           esac
 
-          # Retrieve the PR title properly
+          # Get the PR title from environment variable
           PR_TITLE="${{ env.PR_TITLE }}"
 
           RELEASE_PAYLOAD=$(jq -n \
