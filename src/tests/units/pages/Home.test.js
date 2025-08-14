@@ -22,7 +22,13 @@ describe('Home', () => {
     vi.doMock('@/store/producer', () => ({
       useProducerStore: () => mockStore,
     }))
+    // Reset mockStore properties before each test
+    mockStore.fetchProductFamilies.mockReset()
+    mockStore.productFamilies = []
+    mockStore.loading = false
+  })
 
+  it('fetches product families on mount', async () => {
     const wrapper = mount(Home, {
       global: {
         plugins: [pinia],
