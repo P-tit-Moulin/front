@@ -53,16 +53,6 @@
               <SecondaryButton class="mr-2" @click="clearFilters">
                 Effacer les filtres
               </SecondaryButton>
-              <VChip
-                v-if="
-                  filteredProducers.length !== producerStore.producerList.length
-                "
-                color="#61C187"
-                variant="outlined"
-              >
-                {{ filteredProducers.length }} /
-                {{ producerStore.producerList.length }} producteurs
-              </VChip>
             </VCol>
           </VRow>
         </VContainer>
@@ -88,7 +78,9 @@
             </VCol>
           </VRow>
 
-          <VRow v-if="!producerStore.loading && filteredProducers.length === 0">
+          <VRow
+            v-if="!producerStore.loading && filteredProducers?.length === 0"
+          >
             <VCol cols="12" class="text-center">
               <VIcon icon="mdi-information" size="48" color="grey" />
               <p class="text-grey mt-2">
