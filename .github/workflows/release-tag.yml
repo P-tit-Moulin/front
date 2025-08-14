@@ -188,7 +188,7 @@ jobs:
         run: |
           CHANGELOG_DECODED=$(echo "$CHANGELOG_B64" | base64 -d)
 
-          # Déterminer l'icône selon le type de version
+          # Determine the icon according to the version type
           case ${{ env.VERSION_TYPE }} in
             major) VERSION_ICON="🔥" ;;
             minor) VERSION_ICON="✨" ;;
