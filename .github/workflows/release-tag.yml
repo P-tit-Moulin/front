@@ -50,7 +50,7 @@ jobs:
           PR_BODY_B64=$(echo "$PR_BODY" | base64 -w 0)
           echo "PR_BODY_B64=${PR_BODY_B64}" >> $GITHUB_ENV
 
-          # Déterminer le type de version basé sur les tags dans le titre
+          # Determine the version type based on tags in the title
           VERSION_TYPE=""
           if echo "$PR_TITLE" | grep -qi "#breakingchange\|#breaking\|#major"; then
             VERSION_TYPE="major"
