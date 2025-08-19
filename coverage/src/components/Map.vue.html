@@ -23,9 +23,9 @@
         </h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">53.75% </span>
+            <span class="strong">56.62% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">43/80</span>
+            <span class="fraction">47/83</span>
           </div>
 
           <div class="fl pad1y space-right2">
@@ -41,9 +41,9 @@
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">53.75% </span>
+            <span class="strong">56.62% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">43/80</span>
+            <span class="fraction">47/83</span>
           </div>
         </div>
         <p class="quiet">
@@ -172,7 +172,14 @@
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
 <a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -256,7 +263,6 @@
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -286,7 +292,11 @@
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-  &lt;div ref="mapElement" data-testid="map-element" style="height: 600px; width: 100%"&gt;&lt;/div&gt;
+  &lt;div
+    ref="mapElement"
+    data-testid="map-element"
+    style="height: 600px; width: 100%"
+  &gt;&lt;/div&gt;
 &lt;/template&gt;
 &nbsp;
 &lt;script setup&gt;
@@ -369,7 +379,6 @@ function updateMarkers(coords) {
 function updateUserLocation(location) {
   if (!map.value) <span class="branch-0 cbranch-no" title="branch not covered" >return</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  // Clear existing if any</span>
 <span class="cstat-no" title="statement not covered" >  if (userMarker.value) {</span>
 <span class="cstat-no" title="statement not covered" >    map.value.removeLayer(userMarker.value)</span>
 <span class="cstat-no" title="statement not covered" >    userMarker.value = null</span>
@@ -390,7 +399,7 @@ function updateUserLocation(location) {
 <span class="cstat-no" title="statement not covered" >    }).addTo(map.value)</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    userCircle.value = L.circle(latlng, {</span>
-<span class="cstat-no" title="statement not covered" >      radius: location.radius * 1000, // km → m</span>
+<span class="cstat-no" title="statement not covered" >      radius: location.radius * 1000,</span>
 <span class="cstat-no" title="statement not covered" >      color: '#61C187',</span>
 <span class="cstat-no" title="statement not covered" >      fillColor: '#61C187',</span>
 <span class="cstat-no" title="statement not covered" >      fillOpacity: 0.2,</span>
@@ -412,7 +421,7 @@ function updateUserLocation(location) {
         rel="noopener noreferrer"
         >istanbul</a
       >
-      at 2025-08-07T17:11:15.187Z
+      at 2025-08-14T09:49:30.385Z
     </div>
     <script src="../../prettify.js"></script>
     <script>

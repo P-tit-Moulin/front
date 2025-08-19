@@ -1,14 +1,9 @@
 <template>
-  <div
-    ref="mapElement"
-    data-testid="map-element"
-    style="height: 600px; width: 100%"
-  ></div>
+  <div ref="mapElement" data-testid="map-element" class="map-class"></div>
 </template>
 
 <script setup>
 import { ref, watch, onMounted } from 'vue'
-import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
 const props = defineProps({
@@ -29,8 +24,10 @@ const map = ref(null)
 const markersLayer = ref(null)
 const userMarker = ref(null)
 const userCircle = ref(null)
+let L = null
 
-onMounted(() => {
+onMounted(async () => {
+  L = await import('leaflet')
   if (!mapElement.value) {
     return
   }
@@ -114,3 +111,30 @@ function updateUserLocation(location) {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.map-class {
+  height: 800px;
+  width: 1100px;
+}
+
+@media (max-width: 600px) {
+  .map-class {
+    height: 300px;
+    width: 330px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 960px) {
+  .map-class {
+    height: 300px;
+    width: 700px;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1280px) {
+  .map-class {
+    height: 600px;
+  }
+}
+</style>

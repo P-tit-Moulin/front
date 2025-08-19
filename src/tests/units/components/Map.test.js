@@ -27,7 +27,7 @@ describe('Map', () => {
 
     const mapElement = wrapper.find('[data-testid="map-element"]')
     expect(mapElement.exists()).toBe(true)
-    expect(mapElement.attributes('style')).toContain('height: 600px')
+    expect(mapElement.attributes('class')).toContain('map-class')
   })
 
   it('accepts coordinates prop', () => {

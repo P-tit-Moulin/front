@@ -12,8 +12,6 @@
   </VCard>
 </template>
 
-<script setup></script>
-
 <style lang="scss" scoped>
 .product-card {
   background-image: url('@/assets/img/vegetable_bg.svg');
@@ -25,7 +23,7 @@
 }
 
 .product-card-title {
-  color: $primary-black;
+  color: #363636;
   font-weight: 600;
   line-height: 100%;
   letter-spacing: 0;
