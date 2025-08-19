@@ -3,11 +3,6 @@ import { mount, flushPromises } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import App from '@/App.vue'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-
-const vuetify = createVuetify({ components, directives })
 
 describe('App Integration', () => {
   it('renders main layout components', async () => {
@@ -18,7 +13,7 @@ describe('App Integration', () => {
 
     const wrapper = mount(App, {
       global: {
-        plugins: [router, createPinia(), vuetify],
+        plugins: [router, createPinia()],
         stubs: {
           NavBar: { template: '<div />', name: 'NavBar' },
           Footer: { template: '<div />', name: 'Footer' },
@@ -50,7 +45,7 @@ describe('App Integration', () => {
 
     const wrapper = mount(App, {
       global: {
-        plugins: [router, createPinia(), vuetify],
+        plugins: [router, createPinia()],
         stubs: ['ProductCard', 'PrimaryButton', 'VIcon'],
       },
     })
