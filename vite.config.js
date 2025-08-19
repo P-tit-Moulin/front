@@ -27,9 +27,14 @@ export default defineConfig({
       scss: {
         additionalData: `
         @use "@/assets/styles/settings.scss" as *;
-        @use "@/assets/styles/variables.scss" as *;
         `,
       },
     },
+  },
+  build: {
+    minify: 'esbuild',
+    sourcemap: false,
+    brotliSize: true,
+    chunkSizeWarningLimit: 600,
   },
 })

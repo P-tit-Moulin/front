@@ -1,7 +1,7 @@
 <template>
-  <VRow>
-    <VCol cols="12" class="px-0 mx-n1">
-      <div class="home-banner w-100">
+  <VRow class="ma-0">
+    <VCol cols="12" class="px-0">
+      <div class="home-banner">
         <div>
           <span class="white-title">Une envie de </span
           ><span class="green-title">légumes </span
@@ -17,15 +17,21 @@
       </div>
     </VCol>
   </VRow>
-  <VRow class="home-product-card">
-    <VCol cols="12" class="d-flex align-center justify-space-between mb-12">
+  <VRow class="home-product-card ma-0">
+    <VCol
+      cols="12"
+      class="d-flex align-center flex-wrap flex-md-nowrap justify-md-space-between mb-6"
+    >
       <div>
         <span class="product-black-title"> Les </span>
         <span class="product-green-title">produits</span>
         <span class="product-black-title"> proposés. </span>
       </div>
 
-      <PrimaryButton @click="$router.push('/product-list')">
+      <PrimaryButton
+        class="mt-2 mt-md-0"
+        @click="$router.push('/product-list')"
+      >
         Voir tous les produits
       </PrimaryButton>
     </VCol>
@@ -55,7 +61,7 @@
     </VCol>
   </VRow>
   <VRow>
-    <VCol cols="12" class="home-map d-flex flex-column mb-8">
+    <VCol cols="12" class="home-map d-flex flex-column mb-6 w-100">
       <div class="d-flex flex-column py-6">
         <span class="map-title w-50"
           >Trouver le producteur directement sur la carte</span
@@ -78,8 +84,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useProducerStore } from '@/store/producer'
-import ProductCard from '@/components/ProductCard.vue'
+import { defineAsyncComponent } from 'vue'
 import { getFamilyIcon, getFamilyColor } from '@/utils/familyUtils'
+const ProductCard = defineAsyncComponent(
+  () => import('@/components/ProductCard.vue')
+)
 
 const producerStore = useProducerStore()
 const productFamilies = ref([])
@@ -94,9 +103,7 @@ onMounted(async () => {
 .home-banner {
   background-image: url('@/assets/img/p-tit_moulin_banner.svg');
   background-size: cover;
-  background-position-y: center;
-  height: 580px;
-  padding-inline: 280px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -118,18 +125,18 @@ onMounted(async () => {
 }
 
 .white-title {
-  color: $primary-white;
+  color: #ffffff;
 }
 
 .product-black-title,
 .map-title,
 .map-subtitle {
-  color: $primary-black;
+  color: #363636;
 }
 
 .green-title,
 .product-green-title {
-  color: $primary-green;
+  color: #61c187;
 }
 
 .product-black-title,
@@ -138,20 +145,17 @@ onMounted(async () => {
   font-size: 3rem;
 }
 
+.home-banner,
+.home-map,
 .home-product-card {
-  margin-inline: 256px;
-  margin-top: 96px;
-  margin-bottom: 96px;
+  padding-inline: 24px;
 }
 
 .home-map {
   background-image:
     linear-gradient(to right, rgba(255, 255, 255, 1), rgba(196, 196, 196, 0)),
-    url('@/assets/img/map_banner.png');
+    url('@/assets/img/map_banner.svg');
   background-size: cover;
-  background-position-y: center;
-  height: 580px;
-  padding-inline: 280px;
 }
 .map-subtitle {
   line-height: 100%;

@@ -1,5 +1,5 @@
 <template>
-  <VRow class="product-list">
+  <VRow class="ma-0 px-3 px-sm-0">
     <VCol
       v-for="(family, index) in productFamilies"
       :key="index"
@@ -92,7 +92,11 @@ import { ref, reactive, onMounted } from 'vue'
 import { useProducerStore } from '@/store/producer'
 import { useRouter } from 'vue-router'
 import { getFamilyIcon, getFamilyColor } from '@/utils/familyUtils'
-import ProductCard from '@/components/ProductCard.vue'
+import { defineAsyncComponent } from 'vue'
+
+const ProductCard = defineAsyncComponent(
+  () => import('@/components/ProductCard.vue')
+)
 
 const router = useRouter()
 
@@ -128,21 +132,3 @@ onMounted(async () => {
   productFamilies.value = data.familles_des_produits
 })
 </script>
-
-<style lang="scss" scoped>
-.producer-item {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.producer-item:hover {
-  background-color: #f5f5f5;
-}
-
-.product-list {
-  margin-bottom: 100px;
-}
-</style>
