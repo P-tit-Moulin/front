@@ -1,28 +1,25 @@
 <template>
   <VFooter class="footer-bg">
-    <VRow class="d-flex">
-      <VCol cols="5" class="d-flex flex-column justify-end align-end">
-        <img
-          src="@/assets/img/logo.svg"
-          alt="Logo P'tit Moulin"
-          width="100px"
-          height="84px"
-        />
-        <span class="img-subtitle"
-          >Copyright 2022 - P’tit Moulin - Design par la X Force</span
-        >
-      </VCol>
-      <VCol cols="7" class="d-flex justify-center align-center">
-        <span
-          v-for="(item, i) in itemsInfos"
-          :key="i"
-          :value="item.value"
-          color="$primary-black"
-          class="list-item"
-          >{{ item.title }}</span
-        >
-      </VCol>
-    </VRow>
+    <div class="d-flex flex-column align-center">
+      <img
+        src="@/assets/img/logo.svg"
+        alt="Logo P'tit Moulin"
+        width="60px"
+        height="50px"
+      />
+      <span class="img-subtitle"
+        >Copyright 2022 - P’tit Moulin - Design par la X Force</span
+      >
+    </div>
+
+    <span
+      v-for="(item, i) in itemsInfos"
+      :key="i"
+      :value="item.value"
+      color="#363636"
+      class="list-item"
+      >{{ item.title }}</span
+    >
   </VFooter>
 </template>
 
@@ -33,12 +30,8 @@ const itemsInfos = [
     value: 2,
   },
   {
-    title: 'Politique de confidentialité',
+    title: 'Nous contacter',
     value: 2,
-  },
-  {
-    title: 'CGV',
-    value: 3,
   },
 ]
 </script>
@@ -46,34 +39,37 @@ const itemsInfos = [
 <style lang="scss" scoped>
 .footer-bg {
   background-image: url('@/assets/img/vegetable_bg.svg');
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  max-height: 100px;
-  height: 100px;
+  max-height: 60px;
+  height: 60px;
+  padding: 0 12px;
+  justify-content: space-between;
 }
 
 .img-subtitle {
   font-weight: 400;
-  color: $primary-black;
-  line-height: 100%;
-  letter-spacing: 0;
+  color: #363636;
   font-size: 0.625rem;
 }
 
 .list-subtitle {
-  color: $primary-green;
+  color: #61c187;
   font-weight: 600;
+}
+
+.img-subtitle,
+.list-subtitle,
+.list-item {
   letter-spacing: 0;
   line-height: 100%;
+}
+
+.list-subtitle,
+.list-item {
   font-size: 0.875rem;
 }
 
 .list-item {
   font-weight: 500;
-  letter-spacing: 0;
-  line-height: 187%;
-  font-size: 0.875rem;
   margin-inline: 16px;
 }
 

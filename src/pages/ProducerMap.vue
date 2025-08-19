@@ -1,31 +1,25 @@
 <template>
-  <VRow>
-    <VCol cols="5">
-      <VCard class="filter-card">
+  <VRow class="ma-0">
+    <VCol cols="12" md="5" class="pa-0">
+      <VCard class="filter-card pb-3">
         <VContainer fluid>
           <VRow>
-            <VCol cols="12" md="6">
+            <VCol cols="6" class="pr-2 pb-2 pr-md-3 pb-md-3">
               <VTextField
                 v-model="filters.name"
                 label="Rechercher par nom"
                 prepend-inner-icon="mdi-magnify"
-                clearable
-                variant="outlined"
-                density="compact"
               />
             </VCol>
-            <VCol cols="12" md="6">
+            <VCol cols="6" class="pl-2 pb-2 pl-md-3 pb-md-3">
               <VSelect
                 v-model="filters.city"
                 :items="producerStore.allCities"
                 label="Filtrer par ville"
                 prepend-inner-icon="mdi-map-marker"
-                clearable
-                variant="outlined"
-                density="compact"
               />
             </VCol>
-            <VCol cols="6">
+            <VCol cols="12" md="6" class="py-2 py-md-3">
               <VSlider
                 v-model="filters.proximityRadius"
                 :min="1"
@@ -33,14 +27,16 @@
                 :step="1"
                 color="#61c187"
                 label="Rayon (km)"
+                hide-details
                 thumb-label
               />
             </VCol>
-            <VCol cols="auto" class="pl-2">
+            <VCol cols="6" md="auto" class="pl-2 pt-2 pt-md-3">
               <SecondaryButton
                 :color="filters.userLocation ? '#61C187' : 'primary'"
                 :disabled="locationLoading"
                 :loading="locationLoading"
+                data-test="btn-geolocate"
                 @click="getUserLocation"
               >
                 <VIcon>{{
@@ -49,20 +45,14 @@
                 {{ filters.userLocation ? 'Localisé' : 'Me localiser' }}
               </SecondaryButton>
             </VCol>
-            <VCol cols="auto" class="text-right">
-              <SecondaryButton class="mr-2" @click="clearFilters">
+            <VCol cols="6" md="auto" class="text-right pt-2 pt-md-3">
+              <SecondaryButton
+                data-test="clear-filters"
+                class="mr-2"
+                @click="clearFilters"
+              >
                 Effacer les filtres
               </SecondaryButton>
-              <VChip
-                v-if="
-                  filteredProducers.length !== producerStore.producerList.length
-                "
-                color="#61C187"
-                variant="outlined"
-              >
-                {{ filteredProducers.length }} /
-                {{ producerStore.producerList.length }} producteurs
-              </VChip>
             </VCol>
           </VRow>
         </VContainer>
@@ -88,7 +78,9 @@
             </VCol>
           </VRow>
 
-          <VRow v-if="!producerStore.loading && filteredProducers.length === 0">
+          <VRow
+            v-if="!producerStore.loading && filteredProducers?.length === 0"
+          >
             <VCol cols="12" class="text-center">
               <VIcon icon="mdi-information" size="48" color="grey" />
               <p class="text-grey mt-2">
@@ -100,7 +92,7 @@
       </VCard>
     </VCol>
 
-    <VCol cols="7">
+    <VCol cols="12" md="7" class="d-flex justify-center px-0 py-2 py-md-0">
       <Map
         ref="mapRef"
         :coordinates="filteredCoordinates"
@@ -122,10 +114,13 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import ProducerCard from '../components/ProducerCard.vue'
-import Map from '../components/Map.vue'
+import { defineAsyncComponent } from 'vue'
 import { useProducerStore } from '@/store/producer'
 import { useRouter } from 'vue-router'
+const ProducerCard = defineAsyncComponent(
+  () => import('@/components/ProducerCard.vue')
+)
+const Map = defineAsyncComponent(() => import('@/components/Map.vue'))
 
 const producerStore = useProducerStore()
 const router = useRouter()
@@ -215,10 +210,23 @@ onMounted(() => {
 <style lang="scss" scoped>
 .producer-container {
   overflow-y: auto;
-  max-height: 500px;
+  max-height: 625px;
 }
+
+@media (max-width: 600px) {
+  .producer-container {
+    height: 300px;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1280px) {
+  .producer-container {
+    height: 425px;
+  }
+}
+
 .filter-card {
   border: none !important;
-  height: calc(100vh - 180px);
+  box-shadow: none;
 }
 </style>

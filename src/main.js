@@ -4,16 +4,74 @@ import App from './App.vue'
 import router from './router'
 import './assets/styles/main.scss'
 
-// Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
+import 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import '@mdi/font/css/materialdesignicons.css'
+import {
+  VCardActions,
+  VCardText,
+  VChip,
+  VProgressCircular,
+  VSelect,
+  VSlider,
+  VSnackbar,
+  VApp,
+  VAppBar,
+  VAvatar,
+  VBtn,
+  VCard,
+  VTextField,
+  VDialog,
+  VContainer,
+  VFooter,
+  VRow,
+  VCol,
+  VTabs,
+  VTab,
+  VIcon,
+  VSpacer,
+  VCardTitle,
+  VCardSubtitle,
+  VList,
+  VListItem,
+  VListItemTitle,
+  VListItemSubtitle,
+} from 'vuetify/components'
 
 const vuetify = createVuetify({
-  components,
+  components: {
+    VApp,
+    VAppBar,
+    VBtn,
+    VCard,
+    VTextField,
+    VDialog,
+    VContainer,
+    VFooter,
+    VRow,
+    VCol,
+    VTabs,
+    VTab,
+    VIcon,
+    VSpacer,
+    VCardTitle,
+    VCardSubtitle,
+    VCardText,
+    VCardActions,
+    VAvatar,
+    VChip,
+    VSnackbar,
+    VSelect,
+    VSlider,
+    VProgressCircular,
+    VList,
+    VListItem,
+    VListItemTitle,
+    VListItemSubtitle,
+  },
   directives,
   icons: {
     defaultSet: 'mdi',
@@ -21,9 +79,9 @@ const vuetify = createVuetify({
     sets: { mdi },
   },
   aliases: {
-    PrimaryButton: components.VBtn,
-    SecondaryButton: components.VBtn,
-    TertiaryButton: components.VBtn,
+    PrimaryButton: VBtn,
+    SecondaryButton: VBtn,
+    TertiaryButton: VBtn,
   },
   defaults: {
     PrimaryButton: {
@@ -44,6 +102,20 @@ const vuetify = createVuetify({
     VCard: {
       flat: true,
       class: 'card-style',
+    },
+    VSelect: {
+      clearable: true,
+      variant: 'outlined',
+      density: 'compact',
+      hideDetails: true,
+      clearIcon: 'mdi-close',
+    },
+    VTextField: {
+      clearable: true,
+      variant: 'outlined',
+      density: 'compact',
+      hideDetails: true,
+      clearIcon: 'mdi-close',
     },
   },
 })

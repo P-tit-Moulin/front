@@ -1,6 +1,6 @@
 <template>
-  <VApp class="app-container">
-    <VContainer fluid>
+  <VApp>
+    <VContainer fluid class="h-100 w-100 pa-0">
       <NavBar />
       <router-view />
     </VContainer>
@@ -9,12 +9,8 @@
 </template>
 
 <script setup>
-import Footer from '@/components/Footer.vue'
-import NavBar from '@/components/NavBar.vue'
-</script>
+import { defineAsyncComponent } from 'vue'
 
-<style lang="scss" scoped>
-.app-container {
-  height: 100vh !important;
-}
-</style>
+const Footer = defineAsyncComponent(() => import('@/components/Footer.vue'))
+const NavBar = defineAsyncComponent(() => import('@/components/NavBar.vue'))
+</script>
