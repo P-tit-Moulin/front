@@ -36,6 +36,7 @@
                 :color="filters.userLocation ? '#61C187' : 'primary'"
                 :disabled="locationLoading"
                 :loading="locationLoading"
+                data-test="btn-geolocate"
                 @click="getUserLocation"
               >
                 <VIcon>{{
@@ -45,7 +46,11 @@
               </SecondaryButton>
             </VCol>
             <VCol cols="6" md="auto" class="text-right pt-2 pt-md-3">
-              <SecondaryButton class="mr-2" @click="clearFilters">
+              <SecondaryButton
+                data-test="clear-filters"
+                class="mr-2"
+                @click="clearFilters"
+              >
                 Effacer les filtres
               </SecondaryButton>
             </VCol>
