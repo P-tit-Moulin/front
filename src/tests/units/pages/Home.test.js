@@ -22,7 +22,7 @@ describe('Home', () => {
     vi.doMock('@/store/producer', () => ({
       useProducerStore: () => mockStore,
     }))
-    // Reset mockStore properties before each test
+
     mockStore.fetchProductFamilies.mockReset()
     mockStore.productFamilies = []
     mockStore.loading = false
