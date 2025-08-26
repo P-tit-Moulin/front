@@ -76,6 +76,12 @@ vi.mock('leaflet', () => {
       remove: vi.fn(),
     })),
   }
+  leafletMock.Icon = {
+    Default: class {
+      static mergeOptions = vi.fn()
+    },
+  }
+  leafletMock.Icon.Default.prototype._getIconUrl = vi.fn()
   return { __esModule: true, ...leafletMock, default: leafletMock }
 })
 

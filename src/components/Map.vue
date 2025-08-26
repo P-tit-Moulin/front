@@ -1,10 +1,26 @@
 <template>
-  <div ref="mapElement" data-testid="map-element" class="map-class"></div>
+  <div
+    ref="mapElement"
+    data-testid="map-element"
+    style="height: 600px; width: 100%"
+  ></div>
 </template>
 
 <script setup>
 import { ref, watch, onMounted } from 'vue'
+import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
+import iconUrl from 'leaflet/dist/images/marker-icon.png'
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+
+delete L.Icon.Default.prototype._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+})
 
 const props = defineProps({
   coordinates: {
@@ -24,10 +40,8 @@ const map = ref(null)
 const markersLayer = ref(null)
 const userMarker = ref(null)
 const userCircle = ref(null)
-let L = null
 
-onMounted(async () => {
-  L = await import('leaflet')
+onMounted(() => {
   if (!mapElement.value) {
     return
   }
@@ -120,21 +134,8 @@ function updateUserLocation(location) {
 
 @media (max-width: 600px) {
   .map-class {
-    height: 300px;
-    width: 330px;
-  }
-}
-
-@media (min-width: 601px) and (max-width: 960px) {
-  .map-class {
-    height: 300px;
-    width: 700px;
-  }
-}
-
-@media (min-width: 960px) and (max-width: 1280px) {
-  .map-class {
-    height: 600px;
+    height: 500px;
+    width: 100%;
   }
 }
 </style>
