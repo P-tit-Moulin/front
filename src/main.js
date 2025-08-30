@@ -130,7 +130,7 @@ pinia.use(createSentryPiniaPlugin())
 
 Sentry.init({
   app,
-  dsn: 'https://97a964c6965b1b737309f27ecc640fe0@o4509911975329792.ingest.de.sentry.io/4509912050892880',
+  dsn: import.meta.env.VITE_SENTRY_DSN,
   integrations: [Sentry.browserTracingIntegration()],
   tracesSampleRate: 1.0,
   sampleRate: 1.0,
