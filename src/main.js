@@ -132,8 +132,8 @@ Sentry.init({
   app,
   dsn: import.meta.env.VITE_SENTRY_DSN,
   integrations: [Sentry.browserTracingIntegration()],
-  tracesSampleRate: 1.0,
-  sampleRate: 1.0,
+  tracesSampleRate: 0.2,
+  sampleRate: 0.2,
 })
 
 app.use(vuetify).use(pinia).use(router).mount('#app')
