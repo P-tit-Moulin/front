@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import * as Sentry from '@sentry/vue'
+import { createSentryPiniaPlugin } from '@sentry/vue'
 import App from './App.vue'
 import router from './router'
 import './assets/styles/main.scss'
@@ -120,6 +122,18 @@ const vuetify = createVuetify({
   },
 })
 
+const app = createApp(App)
+
 const pinia = createPinia()
 
-createApp(App).use(vuetify).use(pinia).use(router).mount('#app')
+pinia.use(createSentryPiniaPlugin())
+
+Sentry.init({
+  app,
+  dsn: import.meta.env.VITE_SENTRY_DSN,
+  integrations: [Sentry.browserTracingIntegration()],
+  tracesSampleRate: 0.2,
+  sampleRate: 0.2,
+})
+
+app.use(vuetify).use(pinia).use(router).mount('#app')
