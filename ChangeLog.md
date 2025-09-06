@@ -18,7 +18,7 @@
 
 - Correction de l'affichage des puces de la map
 
-## [2.0.0] - 2025-08-21
+## [2.0.0] - 2025-09-07
 
 ### Modification
 
