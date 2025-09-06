@@ -1,7 +1,7 @@
 {
   "name": "front",
   "private": true,
-  "version": "1.0.1-pre-prod",
+  "version": "1.1.0-pre-prod",
   "type": "module",
   "scripts": {
     "dev": "vite",
