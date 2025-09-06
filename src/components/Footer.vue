@@ -12,13 +12,13 @@
       >
     </div>
 
-    <span
+    <RouterLink
       v-for="(item, i) in itemsInfos"
       :key="i"
-      :value="item.value"
+      :to="item.to"
       color="#363636"
       class="list-item"
-      >{{ item.title }}</span
+      >{{ item.title }}</RouterLink
     >
   </VFooter>
 </template>
@@ -27,10 +27,12 @@
 const itemsInfos = [
   {
     title: 'Mention légales',
-    value: 2,
+    to: '/conditions-generales',
+    value: 1,
   },
   {
     title: 'Nous contacter',
+    to: '/contact',
     value: 2,
   },
 ]
