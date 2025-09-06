@@ -41,6 +41,8 @@ import {
   VListItem,
   VListItemTitle,
   VListItemSubtitle,
+  VAutocomplete,
+  VTextarea,
 } from 'vuetify/components'
 
 const vuetify = createVuetify({
@@ -73,6 +75,8 @@ const vuetify = createVuetify({
     VListItem,
     VListItemTitle,
     VListItemSubtitle,
+    VAutocomplete,
+    VTextarea,
   },
   directives,
   icons: {
@@ -118,6 +122,19 @@ const vuetify = createVuetify({
       density: 'compact',
       hideDetails: true,
       clearIcon: 'mdi-close',
+    },
+    VAutocomplete: {
+      clearable: true,
+      variant: 'outlined',
+      density: 'compact',
+      hideDetails: true,
+      clearIcon: 'mdi-close',
+    },
+    VTextarea: {
+      clearable: true,
+      variant: 'outlined',
+      density: 'compact',
+      hideDetails: true,
     },
   },
 })

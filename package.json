@@ -21,6 +21,7 @@
     "@sentry/vue": "^10.6.0",
     "axios": "^1.8.4",
     "leaflet": "^1.9.4",
+    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "pinia": "^3.0.2",
     "vite-plugin-vuetify": "^2.1.1",
