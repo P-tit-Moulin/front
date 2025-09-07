@@ -149,16 +149,45 @@ const getUserLocation = async () => {
   locationLoading.value = true
   try {
     const position = await new Promise((resolve, reject) =>
-      navigator.geolocation.getCurrentPosition(resolve, reject)
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000, // 5 minutes
+      })
     )
     filters.value.userLocation = {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
     }
+    console.log('Position obtenue:', filters.value.userLocation)
   } catch (err) {
     console.error('Erreur localisation:', err)
+    filters.value.userLocation = {
+      latitude: 48.8566,
+      longitude: 2.3522,
+    }
   } finally {
     locationLoading.value = false
+  }
+}
+
+const getInitialLocation = async () => {
+  if (navigator.geolocation) {
+    try {
+      if ('permissions' in navigator) {
+        const permission = await navigator.permissions.query({
+          name: 'geolocation',
+        })
+        if (permission.state === 'denied') {
+          console.log('Géolocalisation refusée')
+          return
+        }
+      }
+
+      await getUserLocation()
+    } catch (err) {
+      console.log('Géolocalisation non disponible au chargement', err)
+    }
   }
 }
 
@@ -202,8 +231,9 @@ watch(
   { deep: true, immediate: true }
 )
 
-onMounted(() => {
+onMounted(async () => {
   producerStore.fetchAllCities()
+  await getInitialLocation()
 })
 </script>
 
