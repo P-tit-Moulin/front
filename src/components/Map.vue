@@ -87,8 +87,7 @@ function updateMarkers(coords) {
     marker.on('click', () => emit('marker-click', point))
     markersLayer.value.addLayer(marker)
   })
-
-  if (coords.length && map.value) {
+  if (coords.length && map.value && !props.userLocation) {
     const group = L.featureGroup(coords.map(p => L.marker([p.lat, p.lng])))
     map.value.fitBounds(group.getBounds().pad(0.5))
   }
@@ -122,6 +121,8 @@ function updateUserLocation(location) {
       fillColor: '#61C187',
       fillOpacity: 0.2,
     }).addTo(map.value)
+
+    map.value.setView(latlng, 12)
   }
 }
 </script>

@@ -18,10 +18,16 @@
 
 - Correction de l'affichage des puces de la map
 
-## [2.0.0] - 2025-09-07
+## [1.1.0] - 2025-09-07
 
 ### Modification
 
 - Ajout de la connexion
 - Ajout de la création de compte
 - Ajout de la modification des données utilisateurs
+
+## [1.1.1] - 2025-09-08
+
+### Modification
+
+- Affichage des producteurs autour de nous et non l'ensemble des producteurs quand on arrive sur la page
