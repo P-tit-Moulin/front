@@ -108,7 +108,7 @@ async function submit() {
       nom_de_famille: form.value.nom_de_famille,
       email: form.value.email,
       mdp: form.value.mdp,
-      entreprise: form.value.entreprise,
+      nom: form.value.entreprise,
     }
 
     const result = await userStore.register(dataToSend)
