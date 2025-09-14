@@ -42,7 +42,11 @@
           </div>
           <div class="form-group">
             <label for="entreprise">Nom de votre entreprise</label>
-            <AutocompleteEntreprise v-model="form.entreprise" />
+            <ComboboxEntreprise v-model="form.entreprise" />
+            <p class="mb-4">
+              L'entreprise est obligatoire, si vous ne la trouvez pas,
+              saisissez-en la.
+            </p>
           </div>
           <div class="form-group">
             <label for="mdp">Mot de passe</label>
@@ -81,7 +85,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
-import AutocompleteEntreprise from '@/components/AutocompleteEntreprise.vue'
+import ComboboxEntreprise from '@/components/ComboboxEntreprise.vue'
 
 const form = ref({
   prenom: '',

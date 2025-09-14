@@ -1,5 +1,5 @@
 <template>
-  <v-autocomplete
+  <VCombobox
     v-model="entreprise"
     v-model:search="search"
     :items="items"
@@ -7,7 +7,7 @@
     clearable
     item-title="nom"
     item-value="nom"
-    :no-data-text="autocompleteNoDataText"
+    :no-data-text="comboboxNoDataText"
   />
 </template>
 
@@ -21,13 +21,13 @@ const producerStore = useProducerStore()
 const search = ref('')
 const items = ref([])
 const loading = ref(false)
-const autocompleteload = ref(false)
+const comboboxload = ref(false)
 
-const autocompleteNoDataText = computed(() => {
+const comboboxNoDataText = computed(() => {
   if (!search.value || search.value.length < 2) {
     return 'Tapez une recherche'
   }
-  if (search.value && items.value.length === 0 && !autocompleteload.value) {
+  if (search.value && items.value.length === 0 && !comboboxload.value) {
     return 'Aucune entreprise trouvée'
   }
   return ''

@@ -41,7 +41,7 @@ import {
   VListItem,
   VListItemTitle,
   VListItemSubtitle,
-  VAutocomplete,
+  VCombobox,
   VTextarea,
 } from 'vuetify/components'
 
@@ -75,7 +75,7 @@ const vuetify = createVuetify({
     VListItem,
     VListItemTitle,
     VListItemSubtitle,
-    VAutocomplete,
+    VCombobox,
     VTextarea,
   },
   directives,
@@ -123,7 +123,7 @@ const vuetify = createVuetify({
       hideDetails: true,
       clearIcon: 'mdi-close',
     },
-    VAutocomplete: {
+    VCombobox: {
       clearable: true,
       variant: 'outlined',
       density: 'compact',

@@ -31,3 +31,9 @@
 ### Modification
 
 - Affichage des producteurs autour de nous et non l'ensemble des producteurs quand on arrive sur la page
+
+## [1.1.2] - 2025-09-14
+
+### Modification
+
+- Ajout de la saisie d'une entreprise
