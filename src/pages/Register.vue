@@ -112,9 +112,8 @@ async function submit() {
     }
 
     const result = await userStore.register(dataToSend)
-    if (result.accessToken) {
-      userStore.setToken(result.accessToken)
-      router.push('/profil')
+    if (result) {
+      router.push(`/profil/${result.user._id}`)
     } else {
       error.value = 'Erreur de connexion après inscription.'
       snackbar.value = true

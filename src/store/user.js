@@ -44,14 +44,12 @@ export const useUserStore = defineStore('user', {
     },
 
     async logout() {
-      await api.post('/users/logout', {}, { withCredentials: true })
       this.setUser(null, null, null)
     },
 
     async register(payload) {
       try {
         const { data } = await api.post('/users/register', payload)
-
         if (data.accessToken && data.user) {
           this.setUser(data.user, data.accessToken, data.refreshToken)
         }

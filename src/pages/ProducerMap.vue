@@ -68,7 +68,7 @@
           <VRow v-else>
             <VCol
               v-for="producer in filteredProducers"
-              :key="producer.id"
+              :key="producer._id"
               cols="6"
             >
               <ProducerCard
@@ -203,8 +203,8 @@ const clearFilters = () => {
 const dialog = ref(false)
 const producerData = ref(null)
 const goToProducer = producer => {
-  if (producer?.id) {
-    router.push({ name: 'ProducerDetail', params: { id: producer.id } })
+  if (producer?._id) {
+    router.push({ name: 'ProducerDetail', params: { id: producer._id } })
   } else {
     console.warn('Impossible de naviguer : ID du producteur manquant')
   }

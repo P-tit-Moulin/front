@@ -192,7 +192,7 @@ onMounted(async () => {
       return
     }
 
-    const id = userStore.user?.id || userStore.user?._id
+    const id = userStore.user?._id
     if (!id) {
       throw new Error('ID utilisateur non trouvé')
     }

@@ -30,7 +30,7 @@ const routes = [
     component: Register,
   },
   {
-    path: '/profil',
+    path: '/profil/:id',
     name: 'Profil',
     component: ProfilEdit,
   },

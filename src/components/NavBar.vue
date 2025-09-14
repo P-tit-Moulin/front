@@ -28,7 +28,7 @@
         <VTab
           v-if="userStore.isLoggedIn"
           :value="5"
-          to="/profil"
+          :to="`/profil/${userStore.user._id}`"
           class="navbar-tab"
         >
           Profil
