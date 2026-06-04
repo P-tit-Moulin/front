@@ -25,7 +25,26 @@
         <VTab :value="4" to="/producer-map" class="navbar-tab"
           >Producteurs</VTab
         >
+        <VTab
+          v-if="userStore.isLoggedIn"
+          :value="5"
+          :to="`/profil/${userStore.user._id}`"
+          class="navbar-tab"
+        >
+          Profil
+        </VTab>
         <VSpacer class="d-none d-sm-flex" />
+        <VTab
+          v-if="!userStore.isLoggedIn"
+          :value="6"
+          to="/login"
+          class="navbar-tab"
+        >
+          Connexion
+        </VTab>
+        <VTab v-else :value="7" class="navbar-tab" @click="handleLogout">
+          Déconnexion
+        </VTab>
       </VTabs>
     </VCol>
   </VRow>
@@ -34,10 +53,23 @@
 <script setup>
 import { ref } from 'vue'
 import { useDisplay } from 'vuetify'
+import { useUserStore } from '@/store/user'
+import { useRouter } from 'vue-router'
 
 const { mdAndUp } = useDisplay()
 
 const tab = ref(1)
+const userStore = useUserStore()
+const router = useRouter()
+
+async function handleLogout() {
+  try {
+    await userStore.logout()
+    router.push('/')
+  } catch (err) {
+    console.error('Erreur lors de la déconnexion:', err)
+  }
+}
 </script>
 
 <style lang="scss" scoped>

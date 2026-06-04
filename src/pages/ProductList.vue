@@ -45,7 +45,7 @@
         <VList v-if="dialog.producers.length > 0">
           <VListItem
             v-for="producer in dialog.producers"
-            :key="producer.id"
+            :key="producer._id"
             class="mb-2"
           >
             <template #prepend>
@@ -123,7 +123,7 @@ const showProducersByFamily = async product => {
 }
 
 const goToProducer = producer => {
-  router.push(`/producteur/${producer.id}`)
+  router.push({ name: 'ProducerDetail', params: { id: producer._id } })
   dialog.show = false
 }
 
